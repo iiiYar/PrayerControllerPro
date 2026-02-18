@@ -552,12 +552,14 @@ Right-click for quick menu";
                     IqamaTime = p.Iqama,
                     PrayerKey = p.Key,
                     IconCode = p.Icon,
+                    IsCustom = p.IsCustom,
                     Settings = prayerSettings.ContainsKey(p.Key) ? prayerSettings[p.Key] : new PrayerSettings()
                 };
                 
                 card.Click += (s, e) => OpenSettings(card);
                 if (p.IsCustom) {
-                     if (!prayerSettings.ContainsKey(p.Key)) prayerSettings[p.Key] = card.Settings;
+                    if (!prayerSettings.ContainsKey(p.Key)) prayerSettings[p.Key] = card.Settings;
+                    card.DeleteRequested += (s, e) => DeleteCustomPrayer(card.PrayerName);
                 }
 
                 prayersPanel.Controls.Add(card);
@@ -725,6 +727,34 @@ Right-click for quick menu";
                 // Refresh list if we have data
                 if (lastApiData != null) ProcessPrayerData(lastApiData["data"]);
             }
+        }
+
+        private void DeleteCustomPrayer(string name)
+        {
+            var confirm = MessageBox.Show(
+                string.Format("حذف '{0}' من الصلوات المخصصة؟", name),
+                "تأكيد الحذف",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+                
+            if (confirm != DialogResult.Yes) return;
+            
+            // Remove from list
+            customPrayers.RemoveAll(cp => cp.Name == name);
+            SaveCustomPrayers();
+            
+            // Remove from settings
+            if (prayerSettings.ContainsKey(name))
+            {
+                prayerSettings.Remove(name);
+                SaveSettings();
+            }
+            
+            Logger.Log("USER ACTION: Deleted custom prayer: " + name);
+            ShowToast("تم الحذف", string.Format("تم حذف '{0}'", name));
+            
+            // Refresh UI
+            if (lastApiData != null) ProcessPrayerData(lastApiData["data"]);
         }
 
         private void SaveCustomPrayers()
@@ -1009,6 +1039,14 @@ Right-click for quick menu";
         public bool IsNext { get; set; }
         public bool IsActive { get; set; } // New: Currently in pause window
         public PrayerSettings Settings { get; set; }
+        public bool IsCustom { get; set; } // Is this a user-added custom prayer?
+        
+        // Fired when user clicks the delete button on a custom prayer card
+        public event EventHandler DeleteRequested;
+        
+        // Delete button hit area (top-right corner)
+        private Rectangle _deleteRect = new Rectangle(0, 0, 0, 0);
+        private bool _deleteHover = false;
 
         public ModernPrayerCard()
         {
@@ -1108,6 +1146,62 @@ Right-click for quick menu";
                      g.DrawString("AUTO-STOP ON", font, brush, 60, 35);
                  }
              }
+             
+             // Delete button for custom prayers
+             if (IsCustom)
+             {
+                 int btnSize = 22;
+                 int btnX = Width - btnSize - 6;
+                 int btnY = (Height - btnSize) / 2;
+                 _deleteRect = new Rectangle(btnX, btnY, btnSize, btnSize);
+                 
+                 // Button background
+                 Color btnBg = _deleteHover 
+                     ? Color.FromArgb(220, UITheme.AccentRed) 
+                     : Color.FromArgb(80, UITheme.AccentRed);
+                 using (var brush = new SolidBrush(btnBg))
+                 {
+                     g.FillEllipse(brush, _deleteRect);
+                 }
+                 
+                 // X icon
+                 using (var font = UITheme.FontBold(10))
+                 using (var brush = new SolidBrush(Color.White))
+                 {
+                     var xSize = g.MeasureString("✕", font);
+                     g.DrawString("✕", font, brush,
+                         btnX + (btnSize - xSize.Width) / 2,
+                         btnY + (btnSize - xSize.Height) / 2);
+                 }
+             }
+         }
+         
+         protected override void OnMouseMove(MouseEventArgs e)
+         {
+             base.OnMouseMove(e);
+             if (IsCustom && _deleteRect.Width > 0)
+             {
+                 bool wasHover = _deleteHover;
+                 _deleteHover = _deleteRect.Contains(e.Location);
+                 if (wasHover != _deleteHover) Invalidate();
+             }
+         }
+         
+         protected override void OnMouseLeave(EventArgs e)
+         {
+             base.OnMouseLeave(e);
+             if (_deleteHover) { _deleteHover = false; Invalidate(); }
+         }
+         
+         protected override void OnMouseDown(MouseEventArgs e)
+         {
+             if (IsCustom && e.Button == MouseButtons.Left && _deleteRect.Contains(e.Location))
+             {
+                 // Fire delete event instead of the normal click
+                 if (DeleteRequested != null) DeleteRequested(this, EventArgs.Empty);
+                 return;
+             }
+             base.OnMouseDown(e);
          }
         
         // Helper for Rounded Rects
