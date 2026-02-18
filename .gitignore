@@ -1,0 +1,21 @@
+# Compiled output
+*.exe
+*.dll
+*.pdb
+
+# Build artifacts
+bin/
+obj/
+
+# Runtime logs
+debug_log.txt
+*.log
+
+# User-specific files
+*.user
+*.suo
+.vs/
+
+# OS files
+Thumbs.db
+.DS_Store
