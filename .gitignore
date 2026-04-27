@@ -6,6 +6,7 @@
 # Build artifacts
 bin/
 obj/
+releases/
 
 # Runtime logs
 debug_log.txt
