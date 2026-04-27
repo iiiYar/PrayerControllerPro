@@ -13,8 +13,8 @@ public sealed class SettingsStoreTests
         var settingsPath = Path.Combine(directory, "settings.json");
         await File.WriteAllTextAsync(settingsPath, "{ invalid json");
 
-        var store = new SettingsStore(settingsPath, new LegacySettingsMigrator());
-        var settings = await store.LoadAsync([]);
+        var store = new SettingsStore(settingsPath);
+        var settings = await store.LoadAsync();
 
         Assert.Equal(AppCatalog.SupportedCities[0].Id, settings.SelectedCityId);
         Assert.True(File.Exists(settingsPath));
@@ -29,8 +29,8 @@ public sealed class SettingsStoreTests
         var settingsPath = Path.Combine(directory, "settings.json");
         await File.WriteAllTextAsync(settingsPath, "{}");
 
-        var store = new SettingsStore(settingsPath, new LegacySettingsMigrator());
-        var settings = await store.LoadAsync([]);
+        var store = new SettingsStore(settingsPath);
+        var settings = await store.LoadAsync();
 
         Assert.Equal("riyadh", settings.SelectedCityId);
         Assert.Contains("Fajr", settings.PrayerRules.Keys);

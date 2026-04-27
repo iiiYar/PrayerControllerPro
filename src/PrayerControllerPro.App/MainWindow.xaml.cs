@@ -32,7 +32,6 @@ public partial class MainWindow : Window
     private readonly NotificationService _notificationService;
     private readonly AudioPresetDownloadService _audioPresetDownloadService;
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(1) };
-    private readonly List<string> _legacyDirectories;
 
     private AppSettings _settings = AppCatalog.CreateDefaultSettings();
     private CityDefinition _city = AppCatalog.GetCity("riyadh");
@@ -55,9 +54,8 @@ public partial class MainWindow : Window
         _logService = new AppLogService(logDirectory);
         _notificationService = new NotificationService(_trayIconService, _logService);
         _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService);
-        _settingsStore = new SettingsStore(settingsPath, new LegacySettingsMigrator());
+        _settingsStore = new SettingsStore(settingsPath);
         _prayerTimeProvider = new AlAdhanPrayerTimeProvider(cacheDirectory);
-        _legacyDirectories = ResolveLegacyDirectories().ToList();
         _logService.Info("App", "Main window created.");
 
         DataContext = _state;
@@ -88,7 +86,7 @@ public partial class MainWindow : Window
 
     private async Task InitializeAsync()
     {
-        _settings = await _settingsStore.LoadAsync(_legacyDirectories);
+        _settings = await _settingsStore.LoadAsync();
         _city = AppCatalog.GetCity(_settings.SelectedCityId);
         _logService.Info("Settings", "Settings loaded.", $"City={_settings.SelectedCityId}; Method={_settings.CalculationMethod}");
         ApplyAutoStart();
@@ -567,25 +565,6 @@ public partial class MainWindow : Window
         if (_state.IsWidgetMode && e.ButtonState == System.Windows.Input.MouseButtonState.Pressed)
         {
             DragMove();
-        }
-    }
-
-    private static IEnumerable<string> ResolveLegacyDirectories()
-    {
-        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        foreach (var seed in new[] { AppContext.BaseDirectory, Environment.CurrentDirectory })
-        {
-            var current = new DirectoryInfo(seed);
-            while (current is not null)
-            {
-                if (seen.Add(current.FullName))
-                {
-                    yield return current.FullName;
-                }
-
-                current = current.Parent;
-            }
         }
     }
 

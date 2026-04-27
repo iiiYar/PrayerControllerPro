@@ -5,7 +5,7 @@ using PrayerControllerPro.Core.Models;
 
 namespace PrayerControllerPro.Core.Services;
 
-public sealed class SettingsStore(string settingsFilePath, LegacySettingsMigrator migrator)
+public sealed class SettingsStore(string settingsFilePath)
 {
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
@@ -13,7 +13,7 @@ public sealed class SettingsStore(string settingsFilePath, LegacySettingsMigrato
         WriteIndented = true
     };
 
-    public async Task<AppSettings> LoadAsync(IEnumerable<string> legacyDirectories, CancellationToken cancellationToken = default)
+    public async Task<AppSettings> LoadAsync(CancellationToken cancellationToken = default)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(settingsFilePath)!);
 
@@ -34,13 +34,6 @@ public sealed class SettingsStore(string settingsFilePath, LegacySettingsMigrato
                 await SaveAsync(fallbackSettings, cancellationToken).ConfigureAwait(false);
                 return fallbackSettings;
             }
-        }
-
-        var migrated = migrator.TryMigrate(legacyDirectories);
-        if (migrated is not null)
-        {
-            await SaveAsync(migrated, cancellationToken).ConfigureAwait(false);
-            return migrated;
         }
 
         var defaults = AppCatalog.CreateDefaultSettings();
