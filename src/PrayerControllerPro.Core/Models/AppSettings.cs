@@ -4,6 +4,8 @@ public sealed class AppSettings
 {
     public string SelectedCityId { get; set; } = "riyadh";
 
+    public string? SelectedDistrictId { get; set; }
+
     public int CalculationMethod { get; set; } = 4;
 
     public bool AutoStart { get; set; }

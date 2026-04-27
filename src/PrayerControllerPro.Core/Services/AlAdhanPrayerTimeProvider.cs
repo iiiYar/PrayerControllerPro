@@ -9,20 +9,29 @@ public sealed class AlAdhanPrayerTimeProvider(string cacheDirectory, HttpClient?
 {
     private readonly HttpClient _httpClient = httpClient ?? new HttpClient();
 
-    public async Task<DailyPrayerSchedule> GetBuiltInScheduleAsync(CityDefinition city, int calculationMethod, CancellationToken cancellationToken = default)
+    public async Task<DailyPrayerSchedule> GetBuiltInScheduleAsync(
+        CityDefinition city,
+        DistrictDefinition? district,
+        int calculationMethod,
+        CancellationToken cancellationToken = default)
     {
+        if (district is not null && !string.Equals(district.CityId, city.Id, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"District '{district.Id}' does not belong to city '{city.Id}'.");
+        }
+
         Directory.CreateDirectory(cacheDirectory);
 
         var cityNow = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, ResolveTimeZone(city));
         var cityDate = DateOnly.FromDateTime(cityNow.Date);
-        var cachePath = Path.Combine(cacheDirectory, $"{city.Id}_{calculationMethod}_{cityDate:yyyyMMdd}.json");
+        var cachePath = Path.Combine(cacheDirectory, $"{CreateCacheKey(city, district)}_{calculationMethod}_{cityDate:yyyyMMdd}.json");
 
         if (File.Exists(cachePath))
         {
             try
             {
                 var cachedJson = await File.ReadAllTextAsync(cachePath, cancellationToken).ConfigureAwait(false);
-                return ParseSchedule(cachedJson, city, calculationMethod, "Cache");
+                return ParseSchedule(cachedJson, city, district, calculationMethod, "Cache");
             }
             catch
             {
@@ -32,28 +41,46 @@ public sealed class AlAdhanPrayerTimeProvider(string cacheDirectory, HttpClient?
 
         try
         {
-            var url =
-                $"https://api.aladhan.com/v1/timingsByCity?city={Uri.EscapeDataString(city.ApiCity)}&country={Uri.EscapeDataString(city.ApiCountry)}&method={calculationMethod}";
+            var url = CreateApiUrl(city, district, calculationMethod);
             using var response = await _httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
             await File.WriteAllTextAsync(cachePath, json, cancellationToken).ConfigureAwait(false);
-            return ParseSchedule(json, city, calculationMethod, "API");
+            return ParseSchedule(json, city, district, calculationMethod, district is null ? "API" : "API Coordinates");
         }
         catch
         {
             if (File.Exists(cachePath))
             {
                 var cachedJson = await File.ReadAllTextAsync(cachePath, cancellationToken).ConfigureAwait(false);
-                return ParseSchedule(cachedJson, city, calculationMethod, "Cache");
+                return ParseSchedule(cachedJson, city, district, calculationMethod, "Cache");
             }
 
             throw;
         }
     }
 
-    private static DailyPrayerSchedule ParseSchedule(string json, CityDefinition city, int calculationMethod, string source)
+    private static string CreateApiUrl(CityDefinition city, DistrictDefinition? district, int calculationMethod)
+    {
+        if (district is null)
+        {
+            return $"https://api.aladhan.com/v1/timingsByCity?city={Uri.EscapeDataString(city.ApiCity)}&country={Uri.EscapeDataString(city.ApiCountry)}&method={calculationMethod}";
+        }
+
+        var latitude = district.Latitude.ToString(CultureInfo.InvariantCulture);
+        var longitude = district.Longitude.ToString(CultureInfo.InvariantCulture);
+        return $"https://api.aladhan.com/v1/timings?latitude={latitude}&longitude={longitude}&method={calculationMethod}";
+    }
+
+    private static string CreateCacheKey(CityDefinition city, DistrictDefinition? district)
+    {
+        return district is null
+            ? $"city_{city.Id}"
+            : $"district_{city.Id}_{district.Id}";
+    }
+
+    private static DailyPrayerSchedule ParseSchedule(string json, CityDefinition city, DistrictDefinition? district, int calculationMethod, string source)
     {
         using var document = JsonDocument.Parse(json);
         var root = document.RootElement;
@@ -88,6 +115,7 @@ public sealed class AlAdhanPrayerTimeProvider(string cacheDirectory, HttpClient?
         {
             Date = date,
             CityId = city.Id,
+            DistrictId = district?.Id,
             CalculationMethod = calculationMethod,
             Source = source,
             Entries = entries

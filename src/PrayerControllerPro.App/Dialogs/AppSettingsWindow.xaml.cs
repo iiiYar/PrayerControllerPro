@@ -24,6 +24,14 @@ public partial class AppSettingsWindow : Window
         new("Custom", null)
     ];
 
+    private static readonly VolumeGuardTransitionModeOption[] VolumeGuardTransitionModeOptions =
+    [
+        new(VolumeGuardTransitionMode.Fast, "Fast - 2 steps"),
+        new(VolumeGuardTransitionMode.Slow, "Slow - 4 steps"),
+        new(VolumeGuardTransitionMode.Smooth, "Smooth - 8 steps"),
+        new(VolumeGuardTransitionMode.Smoother, "Smoother - 12 steps")
+    ];
+
     private readonly AudioPlaybackService _audioPlaybackService;
     private readonly NotificationService _notificationService;
     private readonly AudioPresetDownloadService _audioPresetDownloadService;
@@ -45,12 +53,15 @@ public partial class AppSettingsWindow : Window
         MethodComboBox.ItemsSource = AppCatalog.CalculationMethods;
         MediaControlModeComboBox.ItemsSource = MediaControlModeOptions;
         VolumeGuardLevelComboBox.ItemsSource = VolumeGuardPresetOptions;
+        VolumeGuardTransitionModeComboBox.ItemsSource = VolumeGuardTransitionModeOptions;
 
         CityComboBox.SelectedItem = AppCatalog.GetCity(settings.SelectedCityId);
+        UpdateDistrictOptions(settings.SelectedDistrictId);
         MethodComboBox.SelectedItem = AppCatalog.CalculationMethods.First(method => method.Id == settings.CalculationMethod);
         AutoStartCheckBox.IsChecked = settings.AutoStart;
         MediaControlModeComboBox.SelectedItem = MediaControlModeOptions.First(option => option.Mode == settings.Audio.MediaControlMode);
         SelectVolumeGuardPreset(settings.Audio.VolumeGuardLevel);
+        VolumeGuardTransitionModeComboBox.SelectedItem = VolumeGuardTransitionModeOptions.First(option => option.Mode == settings.Audio.VolumeGuardTransitionMode);
         CustomVolumeGuardTextBox.Text = (settings.Audio.VolumeGuardLevel * 100d).ToString("0.##", CultureInfo.InvariantCulture);
         EnableAdhanAudioCheckBox.IsChecked = settings.Audio.EnableAdhanAudio;
         EnableIqamaAudioCheckBox.IsChecked = settings.Audio.EnableIqamaAudio;
@@ -73,6 +84,7 @@ public partial class AppSettingsWindow : Window
         NotifyAudioCheckBox.IsChecked = settings.Notifications.NotifyOnAudioEvents;
         NotifyAppCheckBox.IsChecked = settings.Notifications.NotifyOnAppEvents;
 
+        CityComboBox.SelectionChanged += (_, _) => UpdateDistrictOptions(selectedDistrictId: null);
         MediaControlModeComboBox.SelectionChanged += (_, _) => UpdateVolumeGuardControls();
         VolumeGuardLevelComboBox.SelectionChanged += (_, _) => UpdateVolumeGuardControls();
         BrowseAdhanButton.Click += (_, _) => BrowseForAudio(AdhanPathTextBox);
@@ -94,8 +106,10 @@ public partial class AppSettingsWindow : Window
     private void OnSaveClicked(object? sender, RoutedEventArgs e)
     {
         var selectedCity = CityComboBox.SelectedItem as CityDefinition ?? AppCatalog.SupportedCities[0];
+        var selectedDistrict = (DistrictComboBox.SelectedItem as DistrictOption)?.District;
         var selectedMethod = MethodComboBox.SelectedItem as CalculationMethodDefinition ?? AppCatalog.CalculationMethods[0];
         var selectedMediaMode = (MediaControlModeComboBox.SelectedItem as MediaControlModeOption)?.Mode ?? MediaControlMode.PlayPauseKey;
+        var selectedTransitionMode = (VolumeGuardTransitionModeComboBox.SelectedItem as VolumeGuardTransitionModeOption)?.Mode ?? VolumeGuardTransitionMode.Fast;
 
         if (!TryReadVolumeGuardLevel(selectedMediaMode, out var volumeGuardLevel))
         {
@@ -105,6 +119,7 @@ public partial class AppSettingsWindow : Window
         Result = new AppSettings
         {
             SelectedCityId = selectedCity.Id,
+            SelectedDistrictId = selectedDistrict?.Id,
             CalculationMethod = selectedMethod.Id,
             AutoStart = AutoStartCheckBox.IsChecked == true,
             Theme = _sourceSettings.Theme,
@@ -120,7 +135,8 @@ public partial class AppSettingsWindow : Window
                 IqamaPresetUrl = string.IsNullOrWhiteSpace(IqamaPresetUrlTextBox.Text) ? null : IqamaPresetUrlTextBox.Text.Trim(),
                 Volume = VolumeSlider.Value,
                 MediaControlMode = selectedMediaMode,
-                VolumeGuardLevel = volumeGuardLevel
+                VolumeGuardLevel = volumeGuardLevel,
+                VolumeGuardTransitionMode = selectedTransitionMode
             },
             Notifications = BuildNotificationSettingsFromForm()
         };
@@ -159,6 +175,25 @@ public partial class AppSettingsWindow : Window
             NotifyOnAudioEvents = NotifyAudioCheckBox.IsChecked == true,
             NotifyOnAppEvents = NotifyAppCheckBox.IsChecked == true
         };
+    }
+
+    private void UpdateDistrictOptions(string? selectedDistrictId)
+    {
+        var selectedCity = CityComboBox.SelectedItem as CityDefinition ?? AppCatalog.SupportedCities[0];
+        var options = new List<DistrictOption> { new("Use city center", null) };
+        options.AddRange(AppCatalog.GetDistrictsForCity(selectedCity.Id).Select(district => new DistrictOption(district.DisplayName, district)));
+
+        DistrictComboBox.ItemsSource = options;
+        DistrictComboBox.SelectedItem = options.FirstOrDefault(option =>
+            option.District is not null
+            && string.Equals(option.District.Id, selectedDistrictId, StringComparison.OrdinalIgnoreCase))
+            ?? options[0];
+
+        var hasDistricts = options.Count > 1;
+        var visibility = hasDistricts ? Visibility.Visible : Visibility.Collapsed;
+        DistrictLabel.Visibility = visibility;
+        DistrictComboBox.Visibility = visibility;
+        DistrictHelpTextBlock.Visibility = visibility;
     }
 
     private async Task DownloadPresetAsync(
@@ -263,4 +298,8 @@ public partial class AppSettingsWindow : Window
     private sealed record MediaControlModeOption(MediaControlMode Mode, string DisplayName);
 
     private sealed record VolumeGuardPresetOption(string DisplayName, double? Value);
+
+    private sealed record VolumeGuardTransitionModeOption(VolumeGuardTransitionMode Mode, string DisplayName);
+
+    private sealed record DistrictOption(string DisplayName, DistrictDefinition? District);
 }

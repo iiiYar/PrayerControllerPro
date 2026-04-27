@@ -19,4 +19,6 @@ public sealed class AudioSettings
     public MediaControlMode MediaControlMode { get; set; } = MediaControlMode.PlayPauseKey;
 
     public double VolumeGuardLevel { get; set; }
+
+    public VolumeGuardTransitionMode VolumeGuardTransitionMode { get; set; } = VolumeGuardTransitionMode.Fast;
 }

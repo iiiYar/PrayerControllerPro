@@ -104,6 +104,18 @@
                                  Foreground="{StaticResource Brush.TextPrimary}"/>
                         </TextBlock>
 
+                        <TextBlock x:Name="DistrictLabel"
+                                   Text="District"
+                                   Style="{StaticResource DialogLabelStyle}"/>
+                        <ComboBox x:Name="DistrictComboBox"
+                                  Margin="0,0,0,8"
+                                  Style="{StaticResource ReadableFieldComboBoxStyle}"
+                                  DisplayMemberPath="DisplayName"/>
+                        <TextBlock x:Name="DistrictHelpTextBlock"
+                                   Margin="0,0,0,16"
+                                   Text="Optional. Choose Use city center to keep the current city-level timing."
+                                   Style="{StaticResource DialogBodyStyle}"/>
+
                         <TextBlock Text="Calculation method"
                                    Style="{StaticResource DialogLabelStyle}"/>
                         <ComboBox x:Name="MethodComboBox"
@@ -147,6 +159,13 @@
                                 <TextBlock Text="Volume guard level"
                                            Style="{StaticResource DialogLabelStyle}"/>
                                 <ComboBox x:Name="VolumeGuardLevelComboBox"
+                                          Margin="0,0,0,12"
+                                          Style="{StaticResource ReadableFieldComboBoxStyle}"
+                                          DisplayMemberPath="DisplayName"/>
+
+                                <TextBlock Text="Fade style"
+                                           Style="{StaticResource DialogLabelStyle}"/>
+                                <ComboBox x:Name="VolumeGuardTransitionModeComboBox"
                                           Margin="0,0,0,12"
                                           Style="{StaticResource ReadableFieldComboBoxStyle}"
                                           DisplayMemberPath="DisplayName"/>

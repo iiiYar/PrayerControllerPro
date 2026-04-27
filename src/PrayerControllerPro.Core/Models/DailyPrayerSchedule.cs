@@ -6,6 +6,8 @@ public sealed class DailyPrayerSchedule
 
     public string CityId { get; init; } = string.Empty;
 
+    public string? DistrictId { get; init; }
+
     public int CalculationMethod { get; init; }
 
     public string Source { get; init; } = string.Empty;

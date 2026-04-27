@@ -35,6 +35,7 @@ public partial class MainWindow : Window
 
     private AppSettings _settings = AppCatalog.CreateDefaultSettings();
     private CityDefinition _city = AppCatalog.GetCity("riyadh");
+    private DistrictDefinition? _district;
     private DailyPrayerSchedule? _currentSchedule;
     private PrayerExecutionState _executionState = new();
     private bool _isExitRequested;
@@ -88,7 +89,11 @@ public partial class MainWindow : Window
     {
         _settings = await _settingsStore.LoadAsync();
         _city = AppCatalog.GetCity(_settings.SelectedCityId);
-        _logService.Info("Settings", "Settings loaded.", $"City={_settings.SelectedCityId}; Method={_settings.CalculationMethod}");
+        _district = AppCatalog.GetDistrict(_city.Id, _settings.SelectedDistrictId);
+        _logService.Info(
+            "Settings",
+            "Settings loaded.",
+            $"City={_settings.SelectedCityId}; District={_settings.SelectedDistrictId ?? "city-center"}; Method={_settings.CalculationMethod}");
         ApplyAutoStart();
 
         await RefreshScheduleAsync(manualRefresh: false);
@@ -125,11 +130,13 @@ public partial class MainWindow : Window
         try
         {
             _city = AppCatalog.GetCity(_settings.SelectedCityId);
-            var builtInSchedule = await _prayerTimeProvider.GetBuiltInScheduleAsync(_city, _settings.CalculationMethod);
+            _district = AppCatalog.GetDistrict(_city.Id, _settings.SelectedDistrictId);
+            var locationText = BuildLocationText(_city, _district);
+            var builtInSchedule = await _prayerTimeProvider.GetBuiltInScheduleAsync(_city, _district, _settings.CalculationMethod);
             _currentSchedule = _scheduleComposer.Compose(builtInSchedule, _settings, _city);
             EnsureExecutionStateForSchedule(_currentSchedule);
 
-            _state.CityText = $"{_city.DisplayName}, {_city.ApiCountry}";
+            _state.CityText = locationText;
             _state.MethodText = AppCatalog.CalculationMethods.FirstOrDefault(method => method.Id == _settings.CalculationMethod)?.DisplayName
                 ?? $"Method {_settings.CalculationMethod}";
             _state.SourceText = _currentSchedule.Source;
@@ -141,14 +148,14 @@ public partial class MainWindow : Window
             _logService.Info(
                 "Schedule",
                 "Schedule refreshed.",
-                $"Source={_currentSchedule.Source}; City={_state.CityText}; Entries={_currentSchedule.Entries.Count}");
+                $"Source={_currentSchedule.Source}; Location={_state.CityText}; Entries={_currentSchedule.Entries.Count}");
 
             if (manualRefresh)
             {
                 _ = _notificationService.NotifyAsync(
                     _settings,
                     "Schedule refreshed",
-                    $"Loaded {_currentSchedule.Entries.Count} entries for {_city.DisplayName}.",
+                    $"Loaded {_currentSchedule.Entries.Count} entries for {locationText}.",
                     NotificationEventKind.Schedule);
             }
         }
@@ -209,7 +216,7 @@ public partial class MainWindow : Window
             card.IsNext = countdown.Mode == CountdownMode.NextPrayer && card.Id == countdown.PrayerId;
         }
 
-        _trayIconService.UpdateTooltip(_city.DisplayName, countdown.PrayerName, _state.CountdownValue);
+        _trayIconService.UpdateTooltip(BuildLocationName(_city, _district), countdown.PrayerName, _state.CountdownValue);
     }
 
     private void ExecuteSchedulerActions(DateTimeOffset now)
@@ -226,7 +233,9 @@ public partial class MainWindow : Window
                 case SchedulerActionKind.PauseMedia:
                     if (_settings.Audio.MediaControlMode == MediaControlMode.VolumeGuard)
                     {
-                        var protectedCount = _volumeGuardService.Protect(_settings.Audio.VolumeGuardLevel);
+                        var protectedCount = _volumeGuardService.Protect(
+                            _settings.Audio.VolumeGuardLevel,
+                            _settings.Audio.VolumeGuardTransitionMode);
                         var message = $"Media volume lowered for {action.PrayerName}. Protected sessions: {protectedCount}.";
                         _state.StatusText = $"Media volume protected for {action.PrayerName}.";
                         _logService.Info("Scheduler", $"Media volume protected for {action.PrayerName}.", message);
@@ -243,7 +252,7 @@ public partial class MainWindow : Window
                 case SchedulerActionKind.ResumeMedia:
                     if (_settings.Audio.MediaControlMode == MediaControlMode.VolumeGuard)
                     {
-                        var restoredCount = _volumeGuardService.Restore();
+                        var restoredCount = _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
                         _logService.Info("Scheduler", $"Media volume restored after {action.PrayerName}.", $"Restored sessions: {restoredCount}.");
                         _ = _notificationService.NotifyAsync(_settings, "Media volume restored", $"Media volume restored after {action.PrayerName}.", NotificationEventKind.Media);
                     }
@@ -299,10 +308,13 @@ public partial class MainWindow : Window
         await _settingsStore.SaveAsync(_settings);
         if (_settings.Audio.MediaControlMode != MediaControlMode.VolumeGuard)
         {
-            _volumeGuardService.Restore();
+            _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
         }
 
-        _logService.Info("Settings", "Settings saved.", $"City={_settings.SelectedCityId}; Method={_settings.CalculationMethod}");
+        _logService.Info(
+            "Settings",
+            "Settings saved.",
+            $"City={_settings.SelectedCityId}; District={_settings.SelectedDistrictId ?? "city-center"}; Method={_settings.CalculationMethod}");
         ApplyAutoStart();
         await RefreshScheduleAsync(manualRefresh: false);
     }
@@ -463,7 +475,7 @@ public partial class MainWindow : Window
         _logService.Info("App", "Application exit requested.");
         _isExitRequested = true;
         _trayIconService.Dispose();
-        _volumeGuardService.Restore();
+        _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
         _audioPlaybackService.Dispose();
         _notificationService.Dispose();
         _audioPresetDownloadService.Dispose();
@@ -500,6 +512,20 @@ public partial class MainWindow : Window
         return TimeZoneInfo.ConvertTime(DateTimeOffset.Now, timeZone);
     }
 
+    private static string BuildLocationText(CityDefinition city, DistrictDefinition? district)
+    {
+        return district is null
+            ? $"{city.DisplayName}, {city.ApiCountry}"
+            : $"{city.DisplayName} - {district.DisplayName}, {city.ApiCountry}";
+    }
+
+    private static string BuildLocationName(CityDefinition city, DistrictDefinition? district)
+    {
+        return district is null
+            ? city.DisplayName
+            : $"{city.DisplayName} - {district.DisplayName}";
+    }
+
     private void EnsureExecutionStateForSchedule(DailyPrayerSchedule schedule)
     {
         if (_executionState.Date != schedule.Date)
@@ -514,7 +540,7 @@ public partial class MainWindow : Window
         {
             if (_volumeGuardService.IsActive)
             {
-                _volumeGuardService.Restore();
+                _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
             }
 
             return;
@@ -523,13 +549,15 @@ public partial class MainWindow : Window
         var countdown = _scheduler.GetCountdown(now, _currentSchedule);
         if (countdown.Mode == CountdownMode.ResumeAfterPrayer)
         {
-            _volumeGuardService.Protect(_settings.Audio.VolumeGuardLevel);
+            _volumeGuardService.Protect(
+                _settings.Audio.VolumeGuardLevel,
+                _settings.Audio.VolumeGuardTransitionMode);
             return;
         }
 
         if (_volumeGuardService.IsActive)
         {
-            _volumeGuardService.Restore();
+            _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
         }
     }
 

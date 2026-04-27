@@ -58,6 +58,7 @@ public sealed class PrayerScheduleComposer
         {
             Date = builtInSchedule.Date,
             CityId = builtInSchedule.CityId,
+            DistrictId = builtInSchedule.DistrictId,
             CalculationMethod = builtInSchedule.CalculationMethod,
             Source = builtInSchedule.Source,
             Entries = entries.OrderBy(entry => entry.PrayerTime).ToList()

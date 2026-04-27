@@ -9,6 +9,7 @@ Git tags are used for source checkpoints. Build output folders under `releases\`
 | `v1.0.2` | Legacy WinForms checkpoint | Last legacy source checkpoint available in Git history. |
 | `v1.0.10` | Current WPF/.NET 8 checkpoint | Clean WPF project structure with Volume Guard. |
 | `v1.0.11` | Repository cleanup checkpoint | Removed legacy files, removed legacy settings migration, added handoff docs. |
+| `v1.1.0` | District timing and smooth Volume Guard checkpoint | Added optional Riyadh/Jeddah districts via coordinates and stepped volume fade styles. |
 
 ## Local Build Artifacts
 
@@ -19,6 +20,7 @@ releases\v1.0.2\win-x64
 releases\v1.0.3\win-x64
 ...
 releases\v1.0.11\win-x64
+releases\v1.1.0\win-x64
 ```
 
 These folders are intentionally ignored because they contain `.exe`, `.dll`, `.pdb`, and other generated output. Rebuild them with:
