@@ -4,7 +4,7 @@ This document is the quick starting point for future development sessions.
 
 ## Current State
 
-- Current version: `1.1.0`
+- Current version: `1.1.1`
 - Runtime target: `.NET 8`
 - UI framework: `WPF`
 - Main app project: `src/PrayerControllerPro.App`

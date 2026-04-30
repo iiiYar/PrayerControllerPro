@@ -196,6 +196,7 @@ public partial class MainWindow : Window
         if (countdown.Mode == CountdownMode.ResumeAfterPrayer)
         {
             _state.CountdownTargetText = $"Resume at {countdown.TargetTime.ToString("hh:mm tt", EnglishCulture)}";
+            _state.CountdownTargetTimeText = countdown.TargetTime.ToString("hh:mm tt", EnglishCulture);
             _state.CountdownMetaText = countdownEntry is null
                 ? "Automation active"
                 : $"Paused for {countdownEntry.DisplayName}";
@@ -205,6 +206,9 @@ public partial class MainWindow : Window
             _state.CountdownTargetText = countdownEntry is null
                 ? "Adhan at --"
                 : $"Adhan at {countdownEntry.PrayerTime.ToString("hh:mm tt", EnglishCulture)}";
+            _state.CountdownTargetTimeText = countdownEntry is null
+                ? "--"
+                : countdownEntry.PrayerTime.ToString("hh:mm tt", EnglishCulture);
             _state.CountdownMetaText = countdownEntry is null
                 ? "Iqama at --"
                 : $"Iqama at {countdownEntry.IqamaTime.ToString("hh:mm tt", EnglishCulture)}";

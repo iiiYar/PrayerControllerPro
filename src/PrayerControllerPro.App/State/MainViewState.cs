@@ -11,6 +11,7 @@ public sealed class MainViewState : ObservableObject
     private string _countdownPrayerName = "--";
     private string _countdownValue = "--:--:--";
     private string _countdownTargetText = "Adhan at --";
+    private string _countdownTargetTimeText = "--";
     private string _countdownMetaText = "Iqama at --";
     private string _statusText = "Loading prayer schedule...";
     private string _sourceText = "--";
@@ -56,6 +57,12 @@ public sealed class MainViewState : ObservableObject
     {
         get => _countdownTargetText;
         set => SetProperty(ref _countdownTargetText, value);
+    }
+
+    public string CountdownTargetTimeText
+    {
+        get => _countdownTargetTimeText;
+        set => SetProperty(ref _countdownTargetTimeText, value);
     }
 
     public string CountdownMetaText
