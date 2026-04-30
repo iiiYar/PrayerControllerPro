@@ -1,10 +1,14 @@
 # Prayer Controller Pro
 
+<p align="center">
+  <img src="assets/brand/brand-lockup.svg" alt="Prayer Controller Pro logo" width="360">
+</p>
+
 تطبيق Windows لإدارة الوسائط حول أوقات الصلاة، مطور الآن باستخدام `C#` و`WPF` على `.NET 8`.
 
 ## الإصدار الحالي
 
-- `1.2.0`
+- `1.2.1`
 
 ## ما الذي تغير؟
 
@@ -17,8 +21,11 @@ PrayerControllerPro/
 │   └── PrayerControllerPro.App/    # واجهة WPF، tray، الصوت، التحكم بالوسائط
 ├── tests/
 │   └── PrayerControllerPro.Tests/  # اختبارات الجدولة
+├── assets/
+│   └── brand/                      # شعار وهوية المشروع
 ├── docs/
 │   ├── project-handoff.md          # ملخص سريع للجلسات المستقبلية
+│   ├── brand.md                    # دليل الهوية المختصر
 │   ├── release-history.md          # ترتيب الإصدارات وGit tags
 │   └── whats-new.md                # توثيق الميزات والإصلاحات الجديدة
 ├── PrayerControllerPro.sln
@@ -59,6 +66,7 @@ PrayerControllerPro/
 - تحسين كرت الصلاة القادمة بتصميم أوضح للعد التنازلي ووقت الأذان والموقع والحالة
 - إضافة نظام تحديث مركزي ينبه المستخدم عند توفر إصدار أحدث ويعرض زر تحميل مباشر
 - إضافة زر `Stop` لإيقاف تجربة صوت الأذان أو الإقامة من نافذة الإعدادات
+- إضافة هوية بصرية رسمية للشعار والناشر ونافذة `About`
 - تذكيرات مخصصة يومية
 - تحرير التذكيرات المخصصة بالاسم والوقت وأتمتة الوسائط
 - تشغيل في شريط النظام `tray`
@@ -93,7 +101,7 @@ build.bat
 النسخة المنشورة ستظهر داخل:
 
 ```text
-releases\v1.2.0\win-x64\
+releases\v1.2.1\win-x64\
 ```
 
 ويوجد داخلها ملف:

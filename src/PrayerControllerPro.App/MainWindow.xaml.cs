@@ -56,7 +56,7 @@ public partial class MainWindow : Window
         _logService = new AppLogService(logDirectory);
         _notificationService = new NotificationService(_trayIconService, _logService);
         _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService);
-        _updateCheckService = new UpdateCheckService(_logService, typeof(MainWindow).Assembly.GetName().Version ?? new Version(0, 0, 0));
+        _updateCheckService = new UpdateCheckService(_logService, AppIdentity.CurrentVersion);
         _settingsStore = new SettingsStore(settingsPath);
         _prayerTimeProvider = new AlAdhanPrayerTimeProvider(cacheDirectory);
         _logService.Info("App", "Main window created.");
@@ -351,15 +351,8 @@ public partial class MainWindow : Window
     private async Task ShowAboutAsync()
     {
         _logService.Info("App", "About dialog opened.");
-        var version = typeof(MainWindow).Assembly.GetName().Version?.ToString(3) ?? "unknown";
-        var result = System.Windows.MessageBox.Show(
-            this,
-            $"Prayer Controller Pro\nVersion {version}\nWPF desktop app on .NET 8\n\nCheck for updates now?",
-            "About",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Information);
-
-        if (result == MessageBoxResult.Yes)
+        var dialog = new AboutWindow(_settings.Updates.LastUpdateCheckUtc) { Owner = this };
+        if (dialog.ShowDialog() == true)
         {
             await CheckForUpdatesAsync(showNoUpdateMessage: true);
         }
@@ -573,7 +566,7 @@ public partial class MainWindow : Window
         _logService.Info("App", "Window hidden to system tray.");
         _ = _notificationService.NotifyAsync(
             _settings,
-            "Prayer Controller Pro",
+            AppIdentity.ProductName,
             "The app is still running in the system tray.",
             NotificationEventKind.App,
             force: true);
@@ -649,7 +642,7 @@ public partial class MainWindow : Window
             MinWidth = 340;
             MinHeight = 158;
             Topmost = true;
-            Title = "Prayer Controller Widget";
+            Title = "Prayer Controller Pro Widget";
             ResizeMode = ResizeMode.NoResize;
             WindowStyle = WindowStyle.None;
             ShowInTaskbar = true;
@@ -661,7 +654,7 @@ public partial class MainWindow : Window
         MinWidth = 460;
         MinHeight = 800;
         Topmost = false;
-        Title = "Prayer Controller Pro";
+        Title = AppIdentity.ProductName;
         ResizeMode = ResizeMode.CanMinimize;
         WindowStyle = WindowStyle.SingleBorderWindow;
         ShowInTaskbar = true;

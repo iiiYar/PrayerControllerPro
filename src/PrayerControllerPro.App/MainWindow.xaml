@@ -7,6 +7,7 @@
         xmlns:converters="clr-namespace:PrayerControllerPro.App.Converters"
         mc:Ignorable="d"
         Title="Prayer Controller Pro"
+        Icon="Assets/app.ico"
         Width="460"
         Height="860"
         MinWidth="460"
@@ -43,11 +44,20 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Prayer Controller Pro"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{StaticResource Brush.TextPrimary}"
-                                   VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Image Width="30"
+                                   Height="30"
+                                   Margin="0,0,10,0"
+                                   Source="Assets/brand-mark.png"/>
+                            <TextBlock FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource Brush.TextPrimary}"
+                                       VerticalAlignment="Center">
+                                <Run Text="Prayer Controller"/>
+                                <Run Text=" Pro" Foreground="{StaticResource Brush.PrimaryAccentHover}"/>
+                            </TextBlock>
+                        </StackPanel>
 
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"

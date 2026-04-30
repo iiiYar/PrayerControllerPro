@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.2.0",
-  "title": "Prayer Controller Pro v1.2.0",
-  "notes": "Central update notifications are now built in. The app can alert users when a newer version is available, show release notes, and open a direct download link. This release also adds Stop buttons for adhan and iqama audio previews.",
-  "downloadUrl": "https://raw.githubusercontent.com/iiiYar/PrayerControllerPro/main/downloads/PrayerControllerPro-v1.2.0-win-x64.zip",
-  "releaseUrl": "https://github.com/iiiYar/PrayerControllerPro/tree/v1.2.0",
-  "sha256": "344AA990CF67FE3CAD36243A8A118054A3507B21EDAE51E01231F412F8BC5F23",
+  "latestVersion": "1.2.1",
+  "title": "Prayer Controller Pro v1.2.1",
+  "notes": "This release adds the official Prayer Controller Pro identity across the repository and app, including the app icon, tray icon, branded header, publisher metadata, and a structured About window with version, publisher, repository, and update feed details.",
+  "downloadUrl": "https://raw.githubusercontent.com/iiiYar/PrayerControllerPro/main/downloads/PrayerControllerPro-v1.2.1-win-x64.zip",
+  "releaseUrl": "https://github.com/iiiYar/PrayerControllerPro/tree/v1.2.1",
+  "sha256": "2809A390C9A89B897CF3D0CEFF9C6617830C996A4F6865D9250430CADCD0223C",
   "mandatory": false
 }

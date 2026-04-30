@@ -1,0 +1,135 @@
+<Window x:Class="PrayerControllerPro.App.Dialogs.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About Prayer Controller Pro"
+        Icon="../Assets/app.ico"
+        Width="520"
+        Height="470"
+        MinWidth="520"
+        MinHeight="470"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource Brush.WindowBackground}"
+        FontFamily="Segoe UI Variable Text">
+    <Window.Resources>
+        <Style x:Key="AboutLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource Brush.TextSecondary}"/>
+        </Style>
+
+        <Style x:Key="AboutValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource Brush.TextPrimary}"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Width="68"
+                   Height="68"
+                   Source="../Assets/brand-mark.png"
+                   VerticalAlignment="Top"/>
+
+            <StackPanel Grid.Column="1"
+                        Margin="16,2,0,0">
+                <TextBlock FontFamily="Segoe UI Variable Display"
+                           FontSize="27"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource Brush.TextPrimary}">
+                    <Run Text="Prayer Controller"/>
+                    <Run Text=" Pro" Foreground="{StaticResource Brush.PrimaryAccentHover}"/>
+                </TextBlock>
+                <TextBlock Margin="0,6,0,0"
+                           Text="{Binding DescriptionText}"
+                           FontSize="12"
+                           Foreground="{StaticResource Brush.TextSecondary}"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1"
+                Margin="0,22,0,18"
+                Padding="16"
+                Style="{StaticResource SurfaceBorderStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="138"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Product" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ProductName}" Style="{StaticResource AboutValueStyle}"/>
+
+                <TextBlock Grid.Row="1" Margin="0,14,0,0" Text="Version" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,14,0,0" Text="{Binding VersionText}" Style="{StaticResource AboutValueStyle}"/>
+
+                <TextBlock Grid.Row="2" Margin="0,14,0,0" Text="Publisher" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,14,0,0" Text="{Binding PublisherText}" Style="{StaticResource AboutValueStyle}"/>
+
+                <TextBlock Grid.Row="3" Margin="0,14,0,0" Text="Platform" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,14,0,0" Text="{Binding PlatformText}" Style="{StaticResource AboutValueStyle}"/>
+
+                <TextBlock Grid.Row="4" Margin="0,14,0,0" Text="Repository" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0,14,0,0" Text="{Binding RepositoryUrl}" Style="{StaticResource AboutValueStyle}"/>
+
+                <TextBlock Grid.Row="5" Margin="0,14,0,0" Text="Update feed" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Margin="0,14,0,0" Text="{Binding UpdateFeedUrl}" Style="{StaticResource AboutValueStyle}"/>
+
+                <TextBlock Grid.Row="6" Margin="0,14,0,0" Text="Last update check" Style="{StaticResource AboutLabelStyle}"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Margin="0,14,0,0" Text="{Binding LastUpdateCheckText}" Style="{StaticResource AboutValueStyle}"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="RepositoryButton"
+                    Grid.Column="1"
+                    Width="118"
+                    Height="38"
+                    Margin="0,0,8,0"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Content="Repository"/>
+            <Button x:Name="CheckUpdatesButton"
+                    Grid.Column="2"
+                    Width="138"
+                    Height="38"
+                    Margin="0,0,8,0"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Content="Check updates"/>
+            <Button x:Name="CloseButton"
+                    Grid.Column="3"
+                    Width="90"
+                    Height="38"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Content="Close"/>
+        </Grid>
+    </Grid>
+</Window>

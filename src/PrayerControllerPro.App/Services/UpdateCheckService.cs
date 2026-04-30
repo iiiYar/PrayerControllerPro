@@ -7,7 +7,7 @@ namespace PrayerControllerPro.App.Services;
 
 public sealed class UpdateCheckService : IDisposable
 {
-    public const string DefaultManifestUrl = "https://raw.githubusercontent.com/iiiYar/PrayerControllerPro/main/update.json";
+    public const string DefaultManifestUrl = AppIdentity.UpdateFeedUrl;
 
     private readonly HttpClient _httpClient = new();
     private readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };

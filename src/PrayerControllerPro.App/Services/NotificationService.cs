@@ -38,7 +38,7 @@ public sealed class NotificationService(TrayIconService trayIconService, AppLogS
     {
         return await SendDiscordAsync(
             settings.DiscordWebhookUrl,
-            "Prayer Controller Pro",
+            AppIdentity.ProductName,
             "Discord notifications are connected.").ConfigureAwait(false);
     }
 
@@ -57,7 +57,7 @@ public sealed class NotificationService(TrayIconService trayIconService, AppLogS
 
         var payload = new
         {
-            username = "Prayer Controller Pro",
+            username = AppIdentity.ProductName,
             content = $"**{title}**\n{message}",
             allowed_mentions = new { parse = Array.Empty<string>() }
         };

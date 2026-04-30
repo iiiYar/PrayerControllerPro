@@ -12,6 +12,7 @@ Git tags are used for source checkpoints. Build output folders under `releases\`
 | `v1.1.0` | District timing and smooth Volume Guard checkpoint | Added optional Riyadh/Jeddah districts via coordinates and stepped volume fade styles. |
 | `v1.1.1` | Dashboard polish checkpoint | Refined the next-prayer dashboard card layout. |
 | `v1.2.0` | Central update checkpoint | Added update notifications, direct download manifest, and audio preview stop controls. |
+| `v1.2.1` | Brand identity checkpoint | Added project branding, app icon, publisher metadata, and a structured About window. |
 
 ## Local Build Artifacts
 
@@ -25,6 +26,7 @@ releases\v1.0.11\win-x64
 releases\v1.1.0\win-x64
 releases\v1.1.1\win-x64
 releases\v1.2.0\win-x64
+releases\v1.2.1\win-x64
 ```
 
 These folders are intentionally ignored because they contain `.exe`, `.dll`, `.pdb`, and other generated output. Rebuild them with:

@@ -6,12 +6,14 @@ namespace PrayerControllerPro.App.Services;
 public sealed class TrayIconService : IDisposable
 {
     private readonly Forms.NotifyIcon _notifyIcon = new();
+    private Icon? _appIcon;
 
     public void Initialize(Action onOpenRequested, Action onExitRequested)
     {
-        _notifyIcon.Icon = SystemIcons.Application;
+        _appIcon = LoadAppIcon();
+        _notifyIcon.Icon = _appIcon ?? SystemIcons.Application;
         _notifyIcon.Visible = true;
-        _notifyIcon.Text = "Prayer Controller Pro";
+        _notifyIcon.Text = AppIdentity.ProductName;
 
         var menu = new Forms.ContextMenuStrip();
         menu.Items.Add("Open", null, (_, _) => onOpenRequested());
@@ -23,7 +25,7 @@ public sealed class TrayIconService : IDisposable
 
     public void UpdateTooltip(string cityName, string prayerName, string countdown)
     {
-        var text = $"Prayer Controller | {cityName} | {prayerName} | {countdown}";
+        var text = $"Prayer Controller Pro | {cityName} | {prayerName} | {countdown}";
         _notifyIcon.Text = text.Length > 63 ? text[..63] : text;
     }
 
@@ -38,5 +40,19 @@ public sealed class TrayIconService : IDisposable
     {
         _notifyIcon.Visible = false;
         _notifyIcon.Dispose();
+        _appIcon?.Dispose();
+    }
+
+    private static Icon? LoadAppIcon()
+    {
+        var resource = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Assets/app.ico"));
+        if (resource is null)
+        {
+            return null;
+        }
+
+        using var stream = resource.Stream;
+        using var icon = new Icon(stream);
+        return (Icon)icon.Clone();
     }
 }

@@ -1,10 +1,15 @@
 <Project>
   <PropertyGroup>
-    <Version>1.2.0</Version>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.2.0.0</FileVersion>
-    <InformationalVersion>1.2.0</InformationalVersion>
-    <Company>Prayer Controller Pro</Company>
+    <Version>1.2.1</Version>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
+    <FileVersion>1.2.1.0</FileVersion>
+    <InformationalVersion>1.2.1</InformationalVersion>
+    <AssemblyTitle>Prayer Controller Pro</AssemblyTitle>
+    <Authors>iiiYar</Authors>
+    <Company>iiiYar</Company>
     <Product>Prayer Controller Pro</Product>
+    <Description>Prayer timing automation and media control for Windows.</Description>
+    <Copyright>Copyright (c) 2026 iiiYar</Copyright>
+    <RepositoryUrl>https://github.com/iiiYar/PrayerControllerPro</RepositoryUrl>
   </PropertyGroup>
 </Project>
