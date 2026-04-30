@@ -40,6 +40,12 @@ public sealed class AudioPlaybackService : IDisposable
         _player.Open(new Uri(filePath!, UriKind.Absolute));
     }
 
+    public void Stop()
+    {
+        _pendingPlay = false;
+        _player.Stop();
+    }
+
     public void Dispose()
     {
         _player.Close();

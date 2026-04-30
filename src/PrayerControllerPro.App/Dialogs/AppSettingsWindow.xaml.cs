@@ -36,6 +36,7 @@ public partial class AppSettingsWindow : Window
     private readonly NotificationService _notificationService;
     private readonly AudioPresetDownloadService _audioPresetDownloadService;
     private readonly AppSettings _sourceSettings;
+    private bool _isPreviewPlaybackActive;
 
     public AppSettingsWindow(
         AppSettings settings,
@@ -59,6 +60,7 @@ public partial class AppSettingsWindow : Window
         UpdateDistrictOptions(settings.SelectedDistrictId);
         MethodComboBox.SelectedItem = AppCatalog.CalculationMethods.First(method => method.Id == settings.CalculationMethod);
         AutoStartCheckBox.IsChecked = settings.AutoStart;
+        AutoUpdateCheckBox.IsChecked = settings.Updates.CheckForUpdatesAutomatically;
         MediaControlModeComboBox.SelectedItem = MediaControlModeOptions.First(option => option.Mode == settings.Audio.MediaControlMode);
         SelectVolumeGuardPreset(settings.Audio.VolumeGuardLevel);
         VolumeGuardTransitionModeComboBox.SelectedItem = VolumeGuardTransitionModeOptions.First(option => option.Mode == settings.Audio.VolumeGuardTransitionMode);
@@ -93,11 +95,14 @@ public partial class AppSettingsWindow : Window
         DownloadIqamaPresetButton.Click += async (_, _) => await DownloadPresetAsync("Iqama", IqamaPresetUrlTextBox, IqamaPathTextBox, IqamaPresetStatusTextBlock);
         ClearAdhanPresetButton.Click += (_, _) => ClearCachedPreset("Adhan", AdhanPathTextBox, AdhanPresetStatusTextBlock);
         ClearIqamaPresetButton.Click += (_, _) => ClearCachedPreset("Iqama", IqamaPathTextBox, IqamaPresetStatusTextBlock);
-        TestAdhanButton.Click += (_, _) => _audioPlaybackService.Play(AdhanPathTextBox.Text, VolumeSlider.Value);
-        TestIqamaButton.Click += (_, _) => _audioPlaybackService.Play(IqamaPathTextBox.Text, VolumeSlider.Value);
+        TestAdhanButton.Click += (_, _) => PlayPreview(AdhanPathTextBox.Text);
+        TestIqamaButton.Click += (_, _) => PlayPreview(IqamaPathTextBox.Text);
+        StopAdhanButton.Click += (_, _) => StopPreview();
+        StopIqamaButton.Click += (_, _) => StopPreview();
         TestDiscordButton.Click += OnTestDiscordClicked;
         SaveButton.Click += OnSaveClicked;
         CancelButton.Click += (_, _) => Close();
+        Closed += (_, _) => StopPreview();
         UpdateVolumeGuardControls();
     }
 
@@ -123,6 +128,12 @@ public partial class AppSettingsWindow : Window
             CalculationMethod = selectedMethod.Id,
             AutoStart = AutoStartCheckBox.IsChecked == true,
             Theme = _sourceSettings.Theme,
+            Updates = new UpdateSettings
+            {
+                CheckForUpdatesAutomatically = AutoUpdateCheckBox.IsChecked == true,
+                LastUpdateCheckUtc = _sourceSettings.Updates.LastUpdateCheckUtc,
+                SkippedUpdateVersion = _sourceSettings.Updates.SkippedUpdateVersion
+            },
             CustomReminders = _sourceSettings.CustomReminders,
             PrayerRules = _sourceSettings.PrayerRules,
             Audio = new AudioSettings
@@ -143,6 +154,29 @@ public partial class AppSettingsWindow : Window
 
         DialogResult = true;
         Close();
+    }
+
+    private void PlayPreview(string? filePath)
+    {
+        if (!_audioPlaybackService.CanPlay(filePath))
+        {
+            System.Windows.MessageBox.Show(this, "Choose an existing audio file first.", "Audio test", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        _isPreviewPlaybackActive = true;
+        _audioPlaybackService.Play(filePath, VolumeSlider.Value);
+    }
+
+    private void StopPreview()
+    {
+        if (!_isPreviewPlaybackActive)
+        {
+            return;
+        }
+
+        _audioPlaybackService.Stop();
+        _isPreviewPlaybackActive = false;
     }
 
     private async void OnTestDiscordClicked(object? sender, RoutedEventArgs e)

@@ -4,7 +4,7 @@ This document is the quick starting point for future development sessions.
 
 ## Current State
 
-- Current version: `1.1.1`
+- Current version: `1.2.0`
 - Runtime target: `.NET 8`
 - UI framework: `WPF`
 - Main app project: `src/PrayerControllerPro.App`
@@ -26,6 +26,7 @@ This document is the quick starting point for future development sessions.
 - `PrayerScheduleComposer` merges API prayer times with custom reminders and user rules.
 - `SettingsStore` only reads/writes the current JSON settings file in `%AppData%`.
 - `VolumeGuardService` lowers other app audio sessions during prayer windows and can fade volumes down/up in selectable transition styles.
+- `UpdateCheckService` reads the public `update.json` manifest and shows users when a newer build is available.
 - `Win32MediaController` keeps the compatibility `Play/Pause` key method.
 - `MainWindow` is still the main orchestration point and is the best next refactor target.
 

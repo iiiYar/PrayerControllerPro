@@ -138,6 +138,10 @@
                                   Margin="0,0,0,16"
                                   Content="Start app with Windows"/>
 
+                        <CheckBox x:Name="AutoUpdateCheckBox"
+                                  Margin="0,0,0,16"
+                                  Content="Check for updates automatically"/>
+
                         <TextBlock Text="Media control method"
                                    Style="{StaticResource DialogLabelStyle}"/>
                         <ComboBox x:Name="MediaControlModeComboBox"
@@ -321,8 +325,14 @@
                             <Button x:Name="TestAdhanButton"
                                     Width="96"
                                     Height="36"
+                                    Margin="0,0,12,0"
                                     Style="{StaticResource SecondaryButtonStyle}"
                                     Content="Test"/>
+                            <Button x:Name="StopAdhanButton"
+                                    Width="96"
+                                    Height="36"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Content="Stop"/>
                         </StackPanel>
 
                         <Border Margin="0,16,0,0"
@@ -393,8 +403,14 @@
                             <Button x:Name="TestIqamaButton"
                                     Width="96"
                                     Height="36"
+                                    Margin="0,0,12,0"
                                     Style="{StaticResource SecondaryButtonStyle}"
                                     Content="Test"/>
+                            <Button x:Name="StopIqamaButton"
+                                    Width="96"
+                                    Height="36"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Content="Stop"/>
                         </StackPanel>
 
                         <Border Margin="0,16,0,0"

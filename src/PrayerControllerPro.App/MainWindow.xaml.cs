@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     private readonly AppLogService _logService;
     private readonly NotificationService _notificationService;
     private readonly AudioPresetDownloadService _audioPresetDownloadService;
+    private readonly UpdateCheckService _updateCheckService;
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(1) };
 
     private AppSettings _settings = AppCatalog.CreateDefaultSettings();
@@ -55,6 +56,7 @@ public partial class MainWindow : Window
         _logService = new AppLogService(logDirectory);
         _notificationService = new NotificationService(_trayIconService, _logService);
         _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService);
+        _updateCheckService = new UpdateCheckService(_logService, typeof(MainWindow).Assembly.GetName().Version ?? new Version(0, 0, 0));
         _settingsStore = new SettingsStore(settingsPath);
         _prayerTimeProvider = new AlAdhanPrayerTimeProvider(cacheDirectory);
         _logService.Info("App", "Main window created.");
@@ -68,7 +70,7 @@ public partial class MainWindow : Window
         RefreshButton.Click += async (_, _) => await RefreshScheduleAsync(manualRefresh: true);
         SettingsButton.Click += OnSettingsClicked;
         AddReminderButton.Click += OnAddReminderClicked;
-        AboutButton.Click += (_, _) => ShowAbout();
+        AboutButton.Click += async (_, _) => await ShowAboutAsync();
         LogsButton.Click += (_, _) => ShowLogs();
         WidgetModeButton.Click += OnWidgetModeClicked;
         CompactDashboardButton.Click += OnWidgetModeClicked;
@@ -99,6 +101,7 @@ public partial class MainWindow : Window
         await RefreshScheduleAsync(manualRefresh: false);
         _timer.Start();
         _logService.Info("App", "Scheduler timer started.");
+        _ = CheckForUpdatesAsync(showNoUpdateMessage: false);
     }
 
     private async void OnTick(object? sender, EventArgs e)
@@ -345,16 +348,87 @@ public partial class MainWindow : Window
         _logService.Info("UI", _state.IsWidgetMode ? "Switched to widget mode." : "Switched to dashboard mode.");
     }
 
-    private void ShowAbout()
+    private async Task ShowAboutAsync()
     {
         _logService.Info("App", "About dialog opened.");
         var version = typeof(MainWindow).Assembly.GetName().Version?.ToString(3) ?? "unknown";
-        System.Windows.MessageBox.Show(
+        var result = System.Windows.MessageBox.Show(
             this,
-            $"Prayer Controller Pro\nVersion {version}\nWPF desktop app on .NET 8",
+            $"Prayer Controller Pro\nVersion {version}\nWPF desktop app on .NET 8\n\nCheck for updates now?",
             "About",
-            MessageBoxButton.OK,
+            MessageBoxButton.YesNo,
             MessageBoxImage.Information);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            await CheckForUpdatesAsync(showNoUpdateMessage: true);
+        }
+    }
+
+    private async Task CheckForUpdatesAsync(bool showNoUpdateMessage)
+    {
+        if (!showNoUpdateMessage && !_settings.Updates.CheckForUpdatesAutomatically)
+        {
+            return;
+        }
+
+        var result = await _updateCheckService.CheckAsync();
+        _settings.Updates.LastUpdateCheckUtc = DateTimeOffset.UtcNow;
+        await _settingsStore.SaveAsync(_settings);
+
+        if (!result.IsSuccess)
+        {
+            if (showNoUpdateMessage)
+            {
+                System.Windows.MessageBox.Show(
+                    this,
+                    result.ErrorMessage ?? "Could not check for updates.",
+                    "Update check failed",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+
+            return;
+        }
+
+        if (!result.HasUpdate || result.Manifest is null)
+        {
+            if (showNoUpdateMessage)
+            {
+                System.Windows.MessageBox.Show(
+                    this,
+                    "You are running the latest version.",
+                    "Updates",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+
+            return;
+        }
+
+        if (!showNoUpdateMessage
+            && !result.Manifest.Mandatory
+            && string.Equals(_settings.Updates.SkippedUpdateVersion, result.Manifest.LatestVersion, StringComparison.OrdinalIgnoreCase))
+        {
+            _logService.Info("Updates", "Available update was skipped by user.", result.Manifest.LatestVersion);
+            return;
+        }
+
+        _ = _notificationService.NotifyAsync(
+            _settings,
+            string.IsNullOrWhiteSpace(result.Manifest.Title) ? "Update available" : result.Manifest.Title,
+            $"Version {result.Manifest.LatestVersion} is available.",
+            NotificationEventKind.App);
+
+        var dialog = new UpdateAvailableWindow(result.Manifest, result.CurrentVersion) { Owner = this };
+        dialog.ShowDialog();
+
+        if (dialog.SkipVersion)
+        {
+            _settings.Updates.SkippedUpdateVersion = result.Manifest.LatestVersion;
+            await _settingsStore.SaveAsync(_settings);
+            _logService.Info("Updates", "User skipped update version.", result.Manifest.LatestVersion);
+        }
     }
 
     private void ShowLogs()
@@ -483,6 +557,7 @@ public partial class MainWindow : Window
         _audioPlaybackService.Dispose();
         _notificationService.Dispose();
         _audioPresetDownloadService.Dispose();
+        _updateCheckService.Dispose();
         Close();
     }
 

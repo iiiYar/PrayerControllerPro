@@ -131,6 +131,7 @@ public static class AppCatalog
     {
         settings.Audio ??= new AudioSettings();
         settings.Notifications ??= new NotificationSettings();
+        settings.Updates ??= new UpdateSettings();
         settings.PrayerRules ??= new Dictionary<string, PrayerRuleSettings>(StringComparer.OrdinalIgnoreCase);
         settings.CustomReminders ??= [];
 
@@ -151,6 +152,7 @@ public static class AppCatalog
         }
 
         settings.Notifications.DiscordWebhookUrl = NormalizeOptionalText(settings.Notifications.DiscordWebhookUrl);
+        settings.Updates.SkippedUpdateVersion = NormalizeOptionalText(settings.Updates.SkippedUpdateVersion);
 
         if (string.IsNullOrWhiteSpace(settings.SelectedCityId)
             || !SupportedCities.Any(city => string.Equals(city.Id, settings.SelectedCityId, StringComparison.OrdinalIgnoreCase)))

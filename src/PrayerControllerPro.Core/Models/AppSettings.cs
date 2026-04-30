@@ -16,6 +16,8 @@ public sealed class AppSettings
 
     public NotificationSettings Notifications { get; set; } = new();
 
+    public UpdateSettings Updates { get; set; } = new();
+
     public Dictionary<string, PrayerRuleSettings> PrayerRules { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     public List<CustomReminder> CustomReminders { get; set; } = [];
