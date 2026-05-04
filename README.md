@@ -1,4 +1,7 @@
-# Prayer Controller Pro
+<div align="center">
+  <img src="src/PrayerControllerPro.App/Assets/brand-mark.png" alt="Prayer Controller Pro logo" width="96" />
+  <h1>Prayer Controller Pro</h1>
+</div>
 
 Prayer Controller Pro is a Windows desktop application built with .NET 8 and WPF.
 It automates prayer-time-based media control, Adhan and Iqama audio playback,
@@ -28,7 +31,17 @@ reminders, notifications, and system tray behavior.
 
 ## Screenshots
 
-> Add screenshots here
+### App Identity
+
+<p align="center">
+  <img src="src/PrayerControllerPro.App/Assets/brand-mark.png" alt="Prayer Controller Pro app logo" width="160" />
+</p>
+
+### Application Icon
+
+<p align="center">
+  <img src="src/PrayerControllerPro.App/Assets/app.ico" alt="Prayer Controller Pro application icon" width="96" />
+</p>
 
 ## Installation
 
