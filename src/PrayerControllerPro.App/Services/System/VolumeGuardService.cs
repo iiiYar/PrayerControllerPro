@@ -1,10 +1,12 @@
+using System.Diagnostics;
 using NAudio.CoreAudioApi;
+using PrayerControllerPro.App.Services.Logging;
 using PrayerControllerPro.Core.Models;
 using PrayerControllerPro.Core.Services;
 
 namespace PrayerControllerPro.App.Services.System;
 
-public sealed class VolumeGuardService
+public sealed class VolumeGuardService(AppLogService logService)
 {
     private readonly Dictionary<string, GuardedSession> _guardedSessions = new(StringComparer.OrdinalIgnoreCase);
 
@@ -51,16 +53,17 @@ public sealed class VolumeGuardService
                         protectedCount++;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Players can create or destroy audio sessions while we enumerate them.
+                    logService.Warning("System", "Skipped audio session while applying volume guard.", ex.Message);
                 }
             }
 
             return protectedCount;
         }
-        catch
+        catch (Exception ex)
         {
+            logService.Warning("System", "Volume guard protection failed.", ex.Message);
             return 0;
         }
     }
@@ -78,16 +81,16 @@ public sealed class VolumeGuardService
                 StartTransition(guardedSession, guardedSession.OriginalVolume, transitionMode);
                 restoredCount++;
             }
-            catch
+            catch (Exception ex)
             {
-                // Audio sessions can disappear when a player/browser tab closes.
+                logService.Warning("System", "Skipped audio session while restoring volume guard.", ex.Message);
             }
         }
 
         return restoredCount;
     }
 
-    private static void StartTransition(
+    private void StartTransition(
         GuardedSession guardedSession,
         float targetVolume,
         VolumeGuardTransitionMode transitionMode)
@@ -108,7 +111,7 @@ public sealed class VolumeGuardService
         _ = RunTransitionAsync(guardedSession, targetVolume, transitionMode, cancellation);
     }
 
-    private static async Task RunTransitionAsync(
+    private async Task RunTransitionAsync(
         GuardedSession guardedSession,
         float targetVolume,
         VolumeGuardTransitionMode transitionMode,
@@ -133,9 +136,13 @@ public sealed class VolumeGuardService
                 }
             }
         }
-        catch
+        catch (OperationCanceledException ex)
         {
-            // Audio sessions may disappear, or a newer transition may replace this one.
+            Debug.WriteLine($"[Warning] Volume guard transition cancelled: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            logService.Warning("System", "Volume guard transition stopped before completion.", ex.Message);
         }
         finally
         {
@@ -148,14 +155,15 @@ public sealed class VolumeGuardService
         }
     }
 
-    private static string ResolveSessionKey(AudioSessionControl session, int processId, int index)
+    private string ResolveSessionKey(AudioSessionControl session, int processId, int index)
     {
         try
         {
             return session.GetSessionInstanceIdentifier;
         }
-        catch
+        catch (Exception ex)
         {
+            logService.Warning("System", "Audio session identifier was unavailable.", ex.Message);
             return $"{processId}:{index}";
         }
     }

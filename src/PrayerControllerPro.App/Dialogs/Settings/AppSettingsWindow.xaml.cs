@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -254,6 +255,7 @@ public partial class AppSettingsWindow : Window
         }
         catch (Exception ex)
         {
+            Debug.WriteLine($"[Warning] Preset download failed: {ex.Message}");
             statusTextBlock.Text = "Download failed. Check Logs for details.";
             System.Windows.MessageBox.Show(this, ex.Message, $"{kind} preset download failed", MessageBoxButton.OK, MessageBoxImage.Warning);
         }

@@ -34,7 +34,7 @@ public partial class MainWindow : Window
     private readonly SchedulerEngine _scheduler = new();
     private readonly AudioPlaybackService _audioPlaybackService = new();
     private readonly Win32MediaController _mediaController = new();
-    private readonly VolumeGuardService _volumeGuardService = new();
+    private readonly VolumeGuardService _volumeGuardService;
     private readonly AutoStartService _autoStartService = new();
     private readonly TrayIconService _trayIconService = new();
     private readonly AppLogService _logService;
@@ -63,6 +63,7 @@ public partial class MainWindow : Window
         var audioCacheDirectory = Path.Combine(appDataDirectory, "audio-cache");
 
         _logService = new AppLogService(logDirectory);
+        _volumeGuardService = new VolumeGuardService(_logService);
         _notificationService = new NotificationService(_trayIconService, _logService);
         _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService);
         _updateCheckService = new UpdateCheckService(_logService, AppIdentity.CurrentVersion);
