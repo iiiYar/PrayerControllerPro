@@ -33,7 +33,7 @@ public partial class MainWindow : Window
     private readonly PrayerScheduleComposer _scheduleComposer = new();
     private readonly SchedulerEngine _scheduler = new();
     private readonly AudioPlaybackService _audioPlaybackService = new();
-    private readonly Win32MediaController _mediaController = new();
+    private readonly Win32MediaController _mediaController;
     private readonly VolumeGuardService _volumeGuardService;
     private readonly AutoStartService _autoStartService = new();
     private readonly TrayIconService _trayIconService = new();
@@ -64,6 +64,7 @@ public partial class MainWindow : Window
         var audioCacheDirectory = Path.Combine(appDataDirectory, "audio-cache");
 
         _logService = new AppLogService(logDirectory);
+        _mediaController = new Win32MediaController(_logService);
         _volumeGuardService = new VolumeGuardService(_logService);
         _notificationService = new NotificationService(_trayIconService, _logService, _appHttpClient);
         _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService, _appHttpClient);
