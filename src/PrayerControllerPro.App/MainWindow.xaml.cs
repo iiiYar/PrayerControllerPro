@@ -37,6 +37,7 @@ public partial class MainWindow : Window
     private readonly VolumeGuardService _volumeGuardService;
     private readonly AutoStartService _autoStartService = new();
     private readonly TrayIconService _trayIconService = new();
+    private readonly AppHttpClient _appHttpClient = new();
     private readonly AppLogService _logService;
     private readonly NotificationService _notificationService;
     private readonly AudioPresetDownloadService _audioPresetDownloadService;
@@ -64,9 +65,9 @@ public partial class MainWindow : Window
 
         _logService = new AppLogService(logDirectory);
         _volumeGuardService = new VolumeGuardService(_logService);
-        _notificationService = new NotificationService(_trayIconService, _logService);
-        _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService);
-        _updateCheckService = new UpdateCheckService(_logService, AppIdentity.CurrentVersion);
+        _notificationService = new NotificationService(_trayIconService, _logService, _appHttpClient);
+        _audioPresetDownloadService = new AudioPresetDownloadService(audioCacheDirectory, _logService, _appHttpClient);
+        _updateCheckService = new UpdateCheckService(_logService, _appHttpClient, AppIdentity.CurrentVersion);
         _settingsStore = new SettingsStore(settingsPath);
         _prayerTimeProvider = new AlAdhanPrayerTimeProvider(cacheDirectory);
         _logService.Info("App", "Main window created.");
@@ -558,9 +559,6 @@ public partial class MainWindow : Window
         _trayIconService.Dispose();
         _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
         _audioPlaybackService.Dispose();
-        _notificationService.Dispose();
-        _audioPresetDownloadService.Dispose();
-        _updateCheckService.Dispose();
         Close();
     }
 

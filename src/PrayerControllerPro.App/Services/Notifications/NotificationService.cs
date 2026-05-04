@@ -7,16 +7,18 @@ using PrayerControllerPro.Core.Models;
 
 namespace PrayerControllerPro.App.Services.Notifications;
 
-public sealed class NotificationService(TrayIconService trayIconService, AppLogService logService) : IDisposable
+public sealed class NotificationService(
+    TrayIconService trayIconService,
+    AppLogService logService,
+    AppHttpClient appHttpClient)
 {
-    private readonly HttpClient _httpClient = new();
-
     public async Task NotifyAsync(
         AppSettings settings,
         string title,
         string message,
         NotificationEventKind kind,
-        bool force = false)
+        bool force = false,
+        CancellationToken cancellationToken = default)
     {
         var notifications = settings.Notifications;
         if (!force && !ShouldNotify(notifications, kind))
@@ -32,24 +34,26 @@ public sealed class NotificationService(TrayIconService trayIconService, AppLogS
 
         if (notifications.EnableDiscordNotifications)
         {
-            await SendDiscordAsync(notifications.DiscordWebhookUrl, title, message).ConfigureAwait(false);
+            await SendDiscordAsync(notifications.DiscordWebhookUrl, title, message, cancellationToken).ConfigureAwait(false);
         }
     }
 
-    public async Task<bool> SendDiscordTestAsync(NotificationSettings settings)
+    public async Task<bool> SendDiscordTestAsync(
+        NotificationSettings settings,
+        CancellationToken cancellationToken = default)
     {
         return await SendDiscordAsync(
             settings.DiscordWebhookUrl,
             AppIdentity.ProductName,
-            "Discord notifications are connected.").ConfigureAwait(false);
+            "Discord notifications are connected.",
+            cancellationToken).ConfigureAwait(false);
     }
 
-    public void Dispose()
-    {
-        _httpClient.Dispose();
-    }
-
-    private async Task<bool> SendDiscordAsync(string? webhookUrl, string title, string message)
+    private async Task<bool> SendDiscordAsync(
+        string? webhookUrl,
+        string title,
+        string message,
+        CancellationToken cancellationToken)
     {
         if (!TryCreateDiscordWebhookUri(webhookUrl, out var uri))
         {
@@ -68,7 +72,7 @@ public sealed class NotificationService(TrayIconService trayIconService, AppLogS
         {
             var json = JsonSerializer.Serialize(payload);
             using var content = new StringContent(json, Encoding.UTF8, "application/json");
-            using var response = await _httpClient.PostAsync(uri, content).ConfigureAwait(false);
+            using var response = await appHttpClient.PostAsync(uri, content, cancellationToken).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {

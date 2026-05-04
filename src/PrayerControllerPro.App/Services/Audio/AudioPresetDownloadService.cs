@@ -1,12 +1,15 @@
 using System.IO;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using PrayerControllerPro.App.Services.Logging;
+using PrayerControllerPro.App.Services.System;
 
 namespace PrayerControllerPro.App.Services.Audio;
 
-public sealed class AudioPresetDownloadService(string cacheDirectory, AppLogService logService) : IDisposable
+public sealed class AudioPresetDownloadService(
+    string cacheDirectory,
+    AppLogService logService,
+    AppHttpClient appHttpClient)
 {
     private static readonly HashSet<string> SupportedExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -16,8 +19,6 @@ public sealed class AudioPresetDownloadService(string cacheDirectory, AppLogServ
         ".aac",
         ".m4a"
     };
-
-    private readonly HttpClient _httpClient = new();
 
     public string CacheDirectory { get; } = cacheDirectory;
 
@@ -40,7 +41,7 @@ public sealed class AudioPresetDownloadService(string cacheDirectory, AppLogServ
         try
         {
             logService.Info("Audio", $"Downloading {kind} preset.", uri.ToString());
-            using var response = await _httpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
+            using var response = await appHttpClient.GetAsync(uri, cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             var temporaryPath = $"{targetPath}.tmp";
@@ -83,11 +84,6 @@ public sealed class AudioPresetDownloadService(string cacheDirectory, AppLogServ
         var cacheRoot = Path.GetFullPath(CacheDirectory);
         var candidate = Path.GetFullPath(filePath);
         return candidate.StartsWith(cacheRoot, StringComparison.OrdinalIgnoreCase);
-    }
-
-    public void Dispose()
-    {
-        _httpClient.Dispose();
     }
 
     private string BuildCachePath(Uri uri, string kind)

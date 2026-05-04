@@ -1,24 +1,27 @@
-using System.Net.Http;
 using System.Text.Json;
 using PrayerControllerPro.App.Services.Logging;
+using PrayerControllerPro.App.Services.System;
 using PrayerControllerPro.Core.Models;
 using PrayerControllerPro.Core.Services;
 
 namespace PrayerControllerPro.App.Services.Updates;
 
-public sealed class UpdateCheckService : IDisposable
+public sealed class UpdateCheckService
 {
     public const string DefaultManifestUrl = AppIdentity.UpdateFeedUrl;
 
-    private readonly HttpClient _httpClient = new();
     private readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
+    private readonly AppHttpClient _appHttpClient;
     private readonly AppLogService _logService;
 
-    public UpdateCheckService(AppLogService logService, Version currentVersion)
+    public UpdateCheckService(
+        AppLogService logService,
+        AppHttpClient appHttpClient,
+        Version currentVersion)
     {
         _logService = logService;
+        _appHttpClient = appHttpClient;
         CurrentVersion = Normalize(currentVersion);
-        _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd($"PrayerControllerPro/{CurrentVersion}");
     }
 
     public Version CurrentVersion { get; }
@@ -27,7 +30,7 @@ public sealed class UpdateCheckService : IDisposable
     {
         try
         {
-            var json = await _httpClient.GetStringAsync(DefaultManifestUrl, cancellationToken).ConfigureAwait(false);
+            var json = await _appHttpClient.GetStringAsync(DefaultManifestUrl, cancellationToken).ConfigureAwait(false);
             var manifest = JsonSerializer.Deserialize<UpdateManifest>(json, _jsonOptions);
             if (manifest is null)
             {
@@ -58,11 +61,6 @@ public sealed class UpdateCheckService : IDisposable
             _logService.Warning("Updates", "Update check failed.", ex.Message);
             return UpdateCheckResult.Failed(CurrentVersion, ex.Message);
         }
-    }
-
-    public void Dispose()
-    {
-        _httpClient.Dispose();
     }
 
     private static bool IsValidHttpsUrl(string? value)
