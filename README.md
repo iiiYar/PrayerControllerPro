@@ -8,26 +8,26 @@ It automates prayer-time-based media control, Adhan and Iqama audio playback,
 reminders, notifications, and system tray behavior.
 
 [![Latest Release](https://img.shields.io/github/v/release/iiiYar/PrayerControllerPro)](https://github.com/iiiYar/PrayerControllerPro/releases)
-[![License](https://img.shields.io/github/license/iiiYar/PrayerControllerPro)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows-blue)](https://github.com/iiiYar/PrayerControllerPro)
 [![.NET](https://img.shields.io/badge/.NET-8-purple)](https://dotnet.microsoft.com/)
+[![License](https://img.shields.io/github/license/iiiYar/PrayerControllerPro)](LICENSE)
 
 ---
 
 ## Features
 
-- Prayer schedule retrieval from AlAdhan API with daily local caching
+- Prayer schedule from AlAdhan API with daily local caching
 - City and district support (Saudi Arabia, UAE, Egypt)
-- Adhan and Iqama audio playback with configurable presets
+- Adhan and Iqama audio playback with configurable file presets
 - Media pause and resume automation around prayer times
 - Volume guard with smooth fade transitions
 - Custom reminders with independent rules per prayer
-- Windows tray icon with countdown tooltip
+- Windows system tray with live countdown tooltip
 - Windows balloon and Discord webhook notifications
-- Auto-start with Windows support
+- Auto-start with Windows
 - Built-in update checker with version manifest
-- Structured local application logs
-- Widget mode for compact display
+- Structured local JSONL application logs
+- Compact widget mode
 
 ## Screenshots
 
@@ -65,66 +65,52 @@ dotnet run --project src/PrayerControllerPro.App
 ```
 
 ## Project Structure
-src/
-PrayerControllerPro.Core/
-Catalogs/ ← city, district, method, prayer definitions
-Models/ ← domain models and enums
-Services/ ← prayer time provider, scheduler engine,
-settings store, volume planner
 
-PrayerControllerPro.App/
-Assets/ ← icons and embedded resources
-Converters/ ← WPF value converters
-Dialogs/
-About/ ← About window
-Logs/ ← Logs viewer window
-Prayer/ ← Prayer rule editor window
-Reminder/ ← Custom reminder window
-Settings/ ← App settings window
-Update/ ← Update available window
-Infrastructure/ ← ObservableObject base class
-Services/
-Audio/ ← Adhan and Iqama playback, preset download
-Logging/ ← File-based structured logging
-Notifications/ ← Windows tray and Discord notifications
-System/ ← Auto-start, tray icon, volume guard, Win32 media
-Updates/ ← Update check service and result model
-ViewModels/ ← MainViewModel, PrayerCardViewModel
+```text
+src/
+  PrayerControllerPro.Core/
+    Catalogs/         - city, district, calculation method definitions
+    Models/           - domain models and enums
+    Services/         - prayer time provider, scheduler engine, settings store
+
+  PrayerControllerPro.App/
+    Assets/           - icons and embedded resources
+    Converters/       - WPF value converters
+    Dialogs/
+      About/          - About window
+      Logs/           - Log viewer window
+      Prayer/         - Prayer rule editor window
+      Reminder/       - Custom reminder window
+      Settings/       - App settings window
+      Update/         - Update available window
+    Infrastructure/   - ObservableObject base class
+    Services/
+      Audio/          - Adhan and Iqama playback, preset download
+      Logging/        - File-based structured logging
+      Notifications/  - Windows tray and Discord notifications
+      System/         - Auto-start, tray icon, volume guard, Win32 media, shared HTTP
+      Updates/        - Update check service and result model
+    ViewModels/       - MainViewModel, PrayerCardViewModel
 
 tests/
-PrayerControllerPro.Tests/
-AlAdhanPrayerTimeProviderTests
-AppCatalogTests
-SchedulerEngineTests
-SettingsStoreTests
-UpdateVersionComparerTests
-VolumeGuardTransitionPlannerTests
-
-text
+  PrayerControllerPro.Tests/
+```
 
 ## Architecture
 
-See [docs/architecture.md](docs/architecture.md) for a full breakdown of the data flow and layer responsibilities.
-
-## Testing
-
-```bash
-dotnet test
-```
+See [docs/architecture.md](docs/architecture.md) for full data flow and layer responsibilities.
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for the full version history.
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
 ## Contributing
 
-Contributions and bug reports are welcome.
-
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m "feat: description"`
+3. Commit your changes with clear messages
 4. Open a pull request
 
 ## License
 
-Add a license before publishing for broad reuse.
+Add a license file before publishing for broad reuse.
