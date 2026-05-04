@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:state="clr-namespace:PrayerControllerPro.App.State"
+        xmlns:viewModels="clr-namespace:PrayerControllerPro.App.ViewModels"
         xmlns:converters="clr-namespace:PrayerControllerPro.App.Converters"
         mc:Ignorable="d"
         Title="Prayer Controller Pro"
@@ -318,7 +318,7 @@
                                   Background="{StaticResource Brush.Surface}">
                         <ItemsControl ItemsSource="{Binding Prayers}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type state:PrayerCardState}">
+                                <DataTemplate DataType="{x:Type viewModels:PrayerCardViewModel}">
                                     <Grid Margin="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="4"/>

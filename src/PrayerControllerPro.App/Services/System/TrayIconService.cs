@@ -45,7 +45,7 @@ public sealed class TrayIconService : IDisposable
 
     private static Icon? LoadAppIcon()
     {
-        var resource = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Assets/app.ico"));
+        var resource = global::System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Assets/app.ico"));
         if (resource is null)
         {
             return null;

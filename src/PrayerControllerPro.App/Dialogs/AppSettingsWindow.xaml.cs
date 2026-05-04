@@ -2,7 +2,8 @@ using Microsoft.Win32;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using PrayerControllerPro.App.Services;
+using PrayerControllerPro.App.Services.Audio;
+using PrayerControllerPro.App.Services.Notifications;
 using PrayerControllerPro.Core.Catalogs;
 using PrayerControllerPro.Core.Models;
 

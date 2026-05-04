@@ -6,8 +6,12 @@ using System.Windows;
 using Button = System.Windows.Controls.Button;
 using System.Windows.Threading;
 using PrayerControllerPro.App.Dialogs;
-using PrayerControllerPro.App.Services;
-using PrayerControllerPro.App.State;
+using PrayerControllerPro.App.Services.Audio;
+using PrayerControllerPro.App.Services.Logging;
+using PrayerControllerPro.App.Services.Notifications;
+using PrayerControllerPro.App.Services.System;
+using PrayerControllerPro.App.Services.Updates;
+using PrayerControllerPro.App.ViewModels;
 using PrayerControllerPro.Core.Catalogs;
 using PrayerControllerPro.Core.Models;
 using PrayerControllerPro.Core.Services;
@@ -18,7 +22,7 @@ public partial class MainWindow : Window
 {
     private static readonly CultureInfo EnglishCulture = CultureInfo.GetCultureInfo("en-US");
 
-    private readonly MainViewState _state = new();
+    private readonly MainViewModel _state = new();
     private readonly SettingsStore _settingsStore;
     private readonly IPrayerTimeProvider _prayerTimeProvider;
     private readonly PrayerScheduleComposer _scheduleComposer = new();
@@ -668,12 +672,12 @@ public partial class MainWindow : Window
         }
     }
 
-    private static void RebuildPrayerCards(IEnumerable<PrayerScheduleEntry> entries, ObservableCollection<PrayerCardState> target)
+    private static void RebuildPrayerCards(IEnumerable<PrayerScheduleEntry> entries, ObservableCollection<PrayerCardViewModel> target)
     {
         target.Clear();
         foreach (var entry in entries)
         {
-            target.Add(new PrayerCardState(entry));
+            target.Add(new PrayerCardViewModel(entry));
         }
     }
 }
