@@ -3,7 +3,7 @@ using System.Windows;
 using PrayerControllerPro.Core.Catalogs;
 using PrayerControllerPro.Core.Models;
 
-namespace PrayerControllerPro.App.Dialogs;
+namespace PrayerControllerPro.App.Dialogs.Reminder;
 
 public partial class ReminderWindow : Window
 {

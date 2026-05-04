@@ -1,8 +1,8 @@
-<Window x:Class="PrayerControllerPro.App.Dialogs.AboutWindow"
+<Window x:Class="PrayerControllerPro.App.Dialogs.About.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="About Prayer Controller Pro"
-        Icon="../Assets/app.ico"
+        Icon="../../Assets/app.ico"
         Width="520"
         Height="470"
         MinWidth="520"
@@ -40,7 +40,7 @@
 
             <Image Width="68"
                    Height="68"
-                   Source="../Assets/brand-mark.png"
+                   Source="../../Assets/brand-mark.png"
                    VerticalAlignment="Top"/>
 
             <StackPanel Grid.Column="1"

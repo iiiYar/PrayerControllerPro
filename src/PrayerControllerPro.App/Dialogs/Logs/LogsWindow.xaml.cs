@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using PrayerControllerPro.App.Services.Logging;
 
-namespace PrayerControllerPro.App.Dialogs;
+namespace PrayerControllerPro.App.Dialogs.Logs;
 
 public partial class LogsWindow : Window
 {

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 
-namespace PrayerControllerPro.App.Dialogs;
+namespace PrayerControllerPro.App.Dialogs.About;
 
 public partial class AboutWindow : Window
 {

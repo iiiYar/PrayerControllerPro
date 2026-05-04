@@ -7,7 +7,7 @@ using PrayerControllerPro.App.Services.Notifications;
 using PrayerControllerPro.Core.Catalogs;
 using PrayerControllerPro.Core.Models;
 
-namespace PrayerControllerPro.App.Dialogs;
+namespace PrayerControllerPro.App.Dialogs.Settings;
 
 public partial class AppSettingsWindow : Window
 {

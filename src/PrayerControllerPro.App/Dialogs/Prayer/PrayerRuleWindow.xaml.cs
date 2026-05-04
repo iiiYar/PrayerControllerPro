@@ -1,7 +1,7 @@
 using System.Windows;
 using PrayerControllerPro.Core.Models;
 
-namespace PrayerControllerPro.App.Dialogs;
+namespace PrayerControllerPro.App.Dialogs.Prayer;
 
 public partial class PrayerRuleWindow : Window
 {

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Windows;
 using PrayerControllerPro.Core.Models;
 
-namespace PrayerControllerPro.App.Dialogs;
+namespace PrayerControllerPro.App.Dialogs.Update;
 
 public partial class UpdateAvailableWindow : Window
 {
