@@ -143,7 +143,7 @@ public static class AppCatalog
         settings.Audio.VolumeGuardLevel = Math.Clamp(settings.Audio.VolumeGuardLevel, 0d, 1d);
         if (!Enum.IsDefined(settings.Audio.MediaControlMode))
         {
-            settings.Audio.MediaControlMode = MediaControlMode.PlayPauseKey;
+            settings.Audio.MediaControlMode = MediaControlMode.VolumeGuard;
         }
 
         if (!Enum.IsDefined(settings.Audio.VolumeGuardTransitionMode))
@@ -192,6 +192,15 @@ public static class AppCatalog
 
             NormalizeRule(rule, isCustom: true);
         }
+    }
+
+    public static AppSettings CreateDefaultSettings(MediaControlMode mediaControlMode)
+    {
+        var settings = new AppSettings();
+        settings.Audio ??= new AudioSettings();
+        settings.Audio.MediaControlMode = mediaControlMode;
+        EnsureDefaults(settings);
+        return settings;
     }
 
     public static PrayerRuleSettings CreateDefaultRule(bool isCustom)

@@ -137,6 +137,52 @@ public class SchedulerEngineTests
         Assert.Equal(prayerTime.AddMinutes(40), countdown.TargetTime);
     }
 
+    [Fact]
+    public void Evaluate_PlaysAdhan_WhenAppStartsWithinCatchUpWindow()
+    {
+        var prayerTime = new DateTimeOffset(2026, 4, 20, 12, 0, 0, TimeSpan.FromHours(3));
+        var schedule = CreateSchedule(
+            prayerTime,
+            new PrayerRuleSettings
+            {
+                Enabled = true,
+                StopBeforeMinutes = 5,
+                ResumeAfterMinutes = 15,
+                PlayAdhan = true
+            });
+
+        // 3 minutes late — still within the 5-minute catch-up window
+        var actions = _scheduler.Evaluate(
+            prayerTime.AddMinutes(3),
+            schedule,
+            new PrayerExecutionState());
+
+        Assert.Contains(actions, a => a.Kind == SchedulerActionKind.PlayAdhan);
+    }
+
+    [Fact]
+    public void Evaluate_DoesNotPlayAdhan_WhenAppStartsAfterCatchUpWindowExpires()
+    {
+        var prayerTime = new DateTimeOffset(2026, 4, 20, 12, 0, 0, TimeSpan.FromHours(3));
+        var schedule = CreateSchedule(
+            prayerTime,
+            new PrayerRuleSettings
+            {
+                Enabled = true,
+                StopBeforeMinutes = 5,
+                ResumeAfterMinutes = 15,
+                PlayAdhan = true
+            });
+
+        // 6 minutes late — past the 5-minute catch-up window
+        var actions = _scheduler.Evaluate(
+            prayerTime.AddMinutes(6),
+            schedule,
+            new PrayerExecutionState());
+
+        Assert.DoesNotContain(actions, a => a.Kind == SchedulerActionKind.PlayAdhan);
+    }
+
     private static DailyPrayerSchedule CreateSchedule(DateTimeOffset prayerTime, PrayerRuleSettings rule)
     {
         return new DailyPrayerSchedule

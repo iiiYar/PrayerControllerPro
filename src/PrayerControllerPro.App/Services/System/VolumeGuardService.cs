@@ -90,6 +90,25 @@ public sealed class VolumeGuardService(AppLogService logService)
         return restoredCount;
     }
 
+    public void RestoreImmediately()
+    {
+        var guardedSessions = _guardedSessions.Values.ToList();
+        _guardedSessions.Clear();
+
+        foreach (var guardedSession in guardedSessions)
+        {
+            try
+            {
+                guardedSession.TransitionCancellation?.Cancel();
+                guardedSession.Volume.Volume = guardedSession.OriginalVolume;
+            }
+            catch (Exception ex)
+            {
+                logService.Warning("System", "Skipped audio session during immediate volume restore.", ex.Message);
+            }
+        }
+    }
+
     private void StartTransition(
         GuardedSession guardedSession,
         float targetVolume,

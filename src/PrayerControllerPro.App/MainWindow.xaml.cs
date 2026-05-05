@@ -558,7 +558,7 @@ public partial class MainWindow : Window
         _logService.Info("App", "Application exit requested.");
         _isExitRequested = true;
         _trayIconService.Dispose();
-        _volumeGuardService.Restore(_settings.Audio.VolumeGuardTransitionMode);
+        _volumeGuardService.RestoreImmediately();
         _audioPlaybackService.Dispose();
         Close();
     }

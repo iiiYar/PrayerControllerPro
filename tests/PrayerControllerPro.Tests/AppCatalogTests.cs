@@ -6,7 +6,15 @@ namespace PrayerControllerPro.Tests;
 public class AppCatalogTests
 {
     [Fact]
-    public void EnsureDefaults_NormalizesVolumeGuardSettings()
+    public void CreateDefaultSettings_UsesVolumeGuardAsDefaultMediaControlMode()
+    {
+        var settings = AppCatalog.CreateDefaultSettings();
+
+        Assert.Equal(MediaControlMode.VolumeGuard, settings.Audio.MediaControlMode);
+    }
+
+    [Fact]
+    public void EnsureDefaults_NormalizesInvalidMediaControlModeToVolumeGuard()
     {
         var settings = AppCatalog.CreateDefaultSettings();
         settings.Audio.MediaControlMode = (MediaControlMode)999;
@@ -15,9 +23,20 @@ public class AppCatalogTests
 
         AppCatalog.EnsureDefaults(settings);
 
-        Assert.Equal(MediaControlMode.PlayPauseKey, settings.Audio.MediaControlMode);
+        Assert.Equal(MediaControlMode.VolumeGuard, settings.Audio.MediaControlMode);
         Assert.Equal(VolumeGuardTransitionMode.Fast, settings.Audio.VolumeGuardTransitionMode);
         Assert.Equal(1d, settings.Audio.VolumeGuardLevel);
+    }
+
+    [Fact]
+    public void EnsureDefaults_PreservesValidPlayPauseKeySelection()
+    {
+        var settings = AppCatalog.CreateDefaultSettings();
+        settings.Audio.MediaControlMode = MediaControlMode.PlayPauseKey;
+
+        AppCatalog.EnsureDefaults(settings);
+
+        Assert.Equal(MediaControlMode.PlayPauseKey, settings.Audio.MediaControlMode);
     }
 
     [Fact]

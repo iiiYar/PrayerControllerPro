@@ -4,7 +4,7 @@ namespace PrayerControllerPro.Core.Services;
 
 public sealed class SchedulerEngine
 {
-    private readonly TimeSpan _audioGracePeriod = TimeSpan.FromMinutes(1);
+    private readonly TimeSpan _audioCatchUpWindow = TimeSpan.FromMinutes(5);
 
     public IReadOnlyList<SchedulerAction> Evaluate(DateTimeOffset now, DailyPrayerSchedule schedule, PrayerExecutionState state)
     {
@@ -34,7 +34,7 @@ public sealed class SchedulerEngine
                 });
             }
 
-            if (entry.Rule.PlayAdhan && !marker.AdhanTriggered && now >= entry.PrayerTime && now <= entry.PrayerTime + _audioGracePeriod)
+            if (entry.Rule.PlayAdhan && !marker.AdhanTriggered && now >= entry.PrayerTime && now <= entry.PrayerTime + _audioCatchUpWindow)
             {
                 marker.AdhanTriggered = true;
                 actions.Add(new SchedulerAction
@@ -46,7 +46,7 @@ public sealed class SchedulerEngine
                 });
             }
 
-            if (entry.Rule.PlayIqama && !marker.IqamaTriggered && now >= entry.IqamaTime && now <= entry.IqamaTime + _audioGracePeriod)
+            if (entry.Rule.PlayIqama && !marker.IqamaTriggered && now >= entry.IqamaTime && now <= entry.IqamaTime + _audioCatchUpWindow)
             {
                 marker.IqamaTriggered = true;
                 actions.Add(new SchedulerAction

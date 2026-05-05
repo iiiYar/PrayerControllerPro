@@ -4,7 +4,7 @@ This document is the quick starting point for future development sessions.
 
 ## Current State
 
-- Current version: `1.2.0`
+- Current version: `1.2.1`
 - Runtime target: `.NET 8`
 - UI framework: `WPF`
 - Main app project: `src/PrayerControllerPro.App`
@@ -25,7 +25,7 @@ This document is the quick starting point for future development sessions.
 - `SchedulerEngine` decides when to pause media, restore media, and play adhan/iqama events.
 - `PrayerScheduleComposer` merges API prayer times with custom reminders and user rules.
 - `SettingsStore` only reads/writes the current JSON settings file in `%AppData%`.
-- `VolumeGuardService` lowers other app audio sessions during prayer windows and can fade volumes down/up in selectable transition styles.
+- `VolumeGuardService` lowers other app audio sessions during prayer windows and can fade volumes down/up in selectable transition styles. Call `RestoreImmediately()` on app exit to guarantee synchronous restore before process teardown.
 - `UpdateCheckService` reads the public `update.json` manifest and shows users when a newer build is available.
 - `Win32MediaController` keeps the compatibility `Play/Pause` key method.
 - `MainWindow` is still the main orchestration point and is the best next refactor target.
@@ -33,7 +33,7 @@ This document is the quick starting point for future development sessions.
 ## Current Media Control Modes
 
 - `PlayPauseKey`: sends the Windows media Play/Pause key.
-- `VolumeGuard`: lowers other app volumes during active prayer windows, then restores them with the selected fade style.
+- `VolumeGuard`: lowers other app volumes during active prayer windows, then restores them with the selected fade style. **This is the default for new installs.**
 
 ## What Was Removed
 
