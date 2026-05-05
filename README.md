@@ -1,144 +1,118 @@
 # Prayer Controller Pro
 
 <p align="center">
-  <img src="assets/brand/brand-lockup.svg" alt="Prayer Controller Pro logo" width="360">
+  <img src="src/PrayerControllerPro.App/Assets/brand-mark.png" alt="Prayer Controller Pro" width="120" />
 </p>
 
-تطبيق Windows لإدارة الوسائط حول أوقات الصلاة، مطور الآن باستخدام `C#` و`WPF` على `.NET 8`.
+<p align="center">
+  Prayer Controller Pro is a Windows desktop application built with .NET 8 and WPF.<br>
+  It automates prayer-time-based media control, Adhan and Iqama audio playback,<br>
+  reminders, notifications, and system tray behavior.
+</p>
 
-## الإصدار الحالي
+<p align="center">
+  <a href="https://github.com/iiiYar/PrayerControllerPro/releases">
+    <img src="https://img.shields.io/github/v/release/iiiYar/PrayerControllerPro" alt="Latest Release" />
+  </a>
+  <img src="https://img.shields.io/badge/platform-Windows-blue" alt="Windows" />
+  <img src="https://img.shields.io/badge/.NET-8-purple" alt=".NET 8" />
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/iiiYar/PrayerControllerPro" alt="License" />
+  </a>
+</p>
 
-- `1.2.1`
+---
 
-## ما الذي تغير؟
+## Features
 
-النسخة الحالية لم تعد مبنية على ملف WinForms واحد. تم نقل المشروع إلى هيكل قابل للصيانة:
+- Prayer schedule from AlAdhan API with daily local caching
+- City and district support (Saudi Arabia, UAE, Egypt)
+- Adhan and Iqama audio playback with configurable file presets
+- Media pause and resume automation around prayer times
+- Volume guard with smooth fade transitions
+- Custom reminders with independent rules per prayer
+- Windows system tray with live countdown tooltip
+- Windows balloon and Discord webhook notifications
+- Auto-start with Windows
+- Built-in update checker with version manifest
+- Structured local JSONL application logs
+- Compact widget mode
+- Single-instance enforcement — only one copy runs at a time
 
-```text
-PrayerControllerPro/
-├── src/
-│   ├── PrayerControllerPro.Core/   # النواة: النماذج، الجدولة، الإعدادات، مزود أوقات الصلاة
-│   └── PrayerControllerPro.App/    # واجهة WPF، tray، الصوت، التحكم بالوسائط
-├── tests/
-│   └── PrayerControllerPro.Tests/  # اختبارات الجدولة
-├── assets/
-│   └── brand/                      # شعار وهوية المشروع
-├── docs/
-│   ├── project-handoff.md          # ملخص سريع للجلسات المستقبلية
-│   ├── brand.md                    # دليل الهوية المختصر
-│   ├── release-history.md          # ترتيب الإصدارات وGit tags
-│   └── whats-new.md                # توثيق الميزات والإصلاحات الجديدة
-├── PrayerControllerPro.sln
-└── build.bat
+## Screenshots
+
+> Screenshots coming soon
+
+## Installation
+
+1. Download the latest release from the [Releases page](https://github.com/iiiYar/PrayerControllerPro/releases)
+2. Extract the ZIP file
+3. Run `PrayerControllerPro.exe`
+4. No installer required
+
+## Requirements
+
+- Windows 10 or Windows 11 (x64)
+- [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+
+## Build from Source
+
+```bash
+git clone https://github.com/iiiYar/PrayerControllerPro.git
+cd PrayerControllerPro
+dotnet build
+dotnet run --project src/PrayerControllerPro.App
 ```
 
-## الميزات الحالية
+## Project Structure
 
-- عرض الوقت الحالي والعد التنازلي للصلاة القادمة أو وقت استئناف الوسائط
-- لوحة تحكم طولية محسنة لتناسب الاستخدام اليومي بدل الواجهة العريضة السابقة
-- ترتيب أوضح للوحة التحكم مع Hero أنظف وقائمة صلوات أقل ازدحامًا
-- نقل الوقت والتاريخ إلى أعلى الواجهة وإزالة الفوتر السفلي لتوسيع مساحة الجدول
-- إضافة شريط أوامر علوي يحتوي على Widget وReminder وSettings وAbout وLogs وExit
-- إعادة تنظيم الهيدر العلوي ليصبح العنوان والوقت والتاريخ في سطر واحد بدون كرت ثقيل
-- إزالة تكرار المدينة من الهيدر والاكتفاء بعرضها داخل شريط معلومات الجدول
-- تحسين شريط معلومات الجدول ليعرض المصدر والطريقة والموقع بدون تكرار بصري
-- تصغير وتحسين `Widget Mode` ليكون أخف وأوضح كودجت سريع
-- إعادة تصميم `Widget Mode` جذريًا مع شريط accent جانبي وتركيز أكبر على الصلاة والعد التنازلي
-- إضافة نظام `Logs` كامل مع نافذة عرض وفتح مجلد السجلات ومسحها
-- تسجيل أحداث التشغيل والإعدادات وتحديث الجدول والأتمتة والتذكيرات والإشعارات والأخطاء
-- إضافة إعدادات إشعارات داخل `App Settings` تشمل Windows tray notifications وDiscord webhook
-- إضافة اختبار Discord webhook من نافذة الإعدادات
-- إعادة تصميم نافذة `Add/Edit Reminder` بحقول فاتحة ومقروءة مثل نافذة الإعدادات
-- إزالة قسم `Automation` من التذكير واستبداله بتحكم واضح في `Pause before` و`Resume after`
-- جعل الاستئناف بعد وقت الإقامة مضافًا إليه `Resume after` بدل حسابه من وقت الأذان
-- إعادة ترتيب إعدادات الإشعارات إلى قنوات إشعار وأحداث قابلة للتنبيه
-- لوحة أطول ومعلومات أوضح داخل قسم الصلاة القادمة
-- واجهة إنجليزية بالكامل داخل التطبيق
-- وضع `Widget Mode` مصغّر ودائم الظهور أعلى النوافذ
-- جدول صلوات يومي منظم مع إعدادات مستقلة لكل صلاة
-- إيقاف الوسائط قبل الصلاة واستئنافها بعدها
-- دعم أصوات أذان وإقامة قابلة للتغيير من ملفات محلية
-- دعم تحميل preset للأذان أو الإقامة من رابط مرخّص وتخزينه محليًا للتشغيل بدون إنترنت
-- إضافة خيار `Volume guard` داخل الإعدادات لخفض صوت تطبيقات الميديا الأخرى بدل ضغط زر Play/Pause
-- دعم مستويات حماية صوت جاهزة `0%` و`3%` و`5%` مع خيار `Custom` لأي نسبة من 0 إلى 100
-- دعم اختيار حي اختياري داخل الرياض وجدة لجلب أوقات الصلاة عبر إحداثيات الحي من AlAdhan API
-- إضافة أساليب خفض/استرجاع صوت متدرجة لـ `Volume guard`: Fast وSlow وSmooth وSmoother
-- تحسين كرت الصلاة القادمة بتصميم أوضح للعد التنازلي ووقت الأذان والموقع والحالة
-- إضافة نظام تحديث مركزي ينبه المستخدم عند توفر إصدار أحدث ويعرض زر تحميل مباشر
-- إضافة زر `Stop` لإيقاف تجربة صوت الأذان أو الإقامة من نافذة الإعدادات
-- إضافة هوية بصرية رسمية للشعار والناشر ونافذة `About`
-- تذكيرات مخصصة يومية
-- تحرير التذكيرات المخصصة بالاسم والوقت وأتمتة الوسائط
-- تشغيل في شريط النظام `tray`
-- حفظ الإعدادات في `%AppData%\PrayerControllerPro`
+```
+src/
+  PrayerControllerPro.Core/
+    Catalogs/         — city, district, calculation method definitions
+    Models/           — domain models and enums
+    Services/         — prayer time provider, scheduler engine, settings store
 
-## إصلاحات مهمة
+  PrayerControllerPro.App/
+    Assets/           — icons and embedded resources
+    Converters/       — WPF value converters
+    Dialogs/
+      About/          — About window
+      Logs/           — Log viewer window
+      Prayer/         — Prayer rule editor window
+      Reminder/       — Custom reminder window
+      Settings/       — App settings window
+      Update/         — Update available window
+    Infrastructure/   — ObservableObject base class
+    Services/
+      Audio/          — Adhan and Iqama playback, preset download
+      Logging/        — File-based structured logging
+      Notifications/  — Windows tray and Discord notifications
+      System/         — Auto-start, tray icon, volume guard, Win32 media
+      Updates/        — Update check service and result model
+    ViewModels/       — MainViewModel, PrayerCardViewModel
 
-- تحسين موثوقية الجدولة حتى لو دخل التطبيق متأخرًا داخل نافذة الصلاة
-- منع تكرار إيقاف الوسائط بعد تحديث الجدول أثناء نافذة صلاة نشطة
-- حماية بدء التطبيق من ملف إعدادات تالف عبر إنشاء إعدادات افتراضية ونسخة احتياطية للملف المعطوب
-- منع إعادة تنفيذ أحداث الصلاة بعد انتهاء نافذتها
-- إصلاح بيانات المدن بإرسال الدولة الصحيحة إلى AlAdhan API بدل تثبيت `Saudi Arabia`
-- استخدام المنطقة الزمنية المناسبة لكل مدينة مدعومة
-- إضافة Cache يومي لجدول الصلوات لخفض أثر مشاكل الشبكة
-- تنظيف المستودع من ملفات WinForms والإعدادات الجذرية القديمة
-
-## المتطلبات
-
-- Windows 10 أو أحدث
-- .NET 8 Desktop Runtime لتشغيل النسخة المنشورة
-- .NET 8 SDK للبناء من المصدر
-- اتصال إنترنت لجلب أوقات الصلاة وتحديث Discord webhook عند تفعيله
-- اتصال إنترنت عند أول تحميل لـ audio preset فقط، ثم يعمل الملف من الكاش المحلي
-- ملف صوت محلي اختياري للأذان أو الإقامة إذا أردت تشغيل الصوت
-
-## البناء
-
-```bat
-build.bat
+tests/
+  PrayerControllerPro.Tests/
 ```
 
-النسخة المنشورة ستظهر داخل:
+## Architecture
 
-```text
-releases\v1.2.1\win-x64\
-```
+See [docs/architecture.md](docs/architecture.md) for full data flow and layer responsibilities.
 
-ويوجد داخلها ملف:
+## Changelog
 
-```text
-version.txt
-```
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-ليوضح رقم الإصدار الحالي وتفاصيل البناء.
+## Contributing
 
-أو مباشرة:
+Contributions and bug reports are welcome.
 
-```powershell
-dotnet build PrayerControllerPro.sln
-```
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes with clear messages
+4. Open a pull request
 
-## الاختبارات
+## License
 
-```powershell
-dotnet test tests/PrayerControllerPro.Tests/PrayerControllerPro.Tests.csproj
-```
-
-## التشغيل أثناء التطوير
-
-```powershell
-dotnet run --project src/PrayerControllerPro.App/PrayerControllerPro.App.csproj
-```
-
-## ملاحظات
-
-- التطبيق لا يضم ملفات أذان أو إقامة داخل المستودع. اختر ملفاتك الصوتية من نافذة الإعدادات.
-- يمكن اختيار طريقة التحكم بالوسائط من الإعدادات: زر النظام `Play/Pause` أو `Volume guard` الذي يخفض صوت التطبيقات الأخرى أثناء نافذة الصلاة ثم يعيدها بعدها.
-- ملفات WinForms والإعدادات الجذرية القديمة حُذفت. الإعدادات الحالية تحفظ داخل `%AppData%\PrayerControllerPro`.
-- يمكن التبديل بين لوحة التحكم الكاملة ووضع `Widget Mode` من الزر داخل الواجهة.
-
-## توثيق التغييرات
-
-راجع [docs/whats-new.md](docs/whats-new.md) لملخص الميزات والإصلاحات، و[docs/project-handoff.md](docs/project-handoff.md) كنقطة بداية لأي جلسة تطوير مستقبلية.
-
-لإصدار تحديث مركزي يظهر للمستخدمين داخل التطبيق، راجع [docs/update-workflow.md](docs/update-workflow.md).
+Add a license file before publishing for broad reuse.
