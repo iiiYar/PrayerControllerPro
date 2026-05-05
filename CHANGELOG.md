@@ -1,28 +1,28 @@
 # Changelog
 
-All notable changes to this project are documented here.
-Format: Keep a Changelog (https://keepachangelog.com)
+All notable changes to this project are documented in this file.
+Format based on [Keep a Changelog](https://keepachangelog.com).
 
 ## [Unreleased]
 
 ### Changed
-- Reorganized Services/ into Audio, Logging, Notifications, System, and Updates subfolders
-- Renamed State/ to ViewModels/ with proper ViewModel naming
-- Split Dialogs/ into per-dialog subfolders
-- Updated all namespaces and type references
-- Improved Win32 media control with a SendInput fallback and diagnostic logging
+- Reorganized `Services/` into `Audio/`, `Logging/`, `Notifications/`, `System/`, `Updates/` subfolders
+- Renamed `State/` to `ViewModels/` with proper ViewModel naming conventions
+  - `MainViewState` → `MainViewModel`
+  - `PrayerCardState` → `PrayerCardViewModel`
+- Split `Dialogs/` into per-dialog subfolders (`About/`, `Logs/`, `Prayer/`, `Reminder/`, `Settings/`, `Update/`)
+- Updated all namespaces and type references throughout the codebase
 
 ### Fixed
-- Prevent multiple app instances using a named Mutex and activation event
-- Replaced silent catch blocks with diagnostic logging
-- Unified HttpClient usage via shared AppHttpClient
+- Single-instance enforcement via named `Mutex` + `EventWaitHandle`
+  — launching the app twice now activates the existing window instead of opening a second instance
 
 ## [1.2.1] - 2026-04-30
 
 ### Changed
 - Applied official Prayer Controller Pro identity across repo and app
 - Added branded app icon and tray icon improvements
-- Improved About window with version, publisher, and update feed details
+- Improved About window with version, publisher, repository, and update feed details
 - Updated release metadata and repository presentation
 
 ## [1.2.0] - 2026-04-30
@@ -51,6 +51,7 @@ Format: Keep a Changelog (https://keepachangelog.com)
 
 ### Changed
 - Cleaned repository for release consistency
+- Reduced codebase clutter
 
 ## [1.0.10] - 2026-04-27
 
@@ -64,8 +65,8 @@ Format: Keep a Changelog (https://keepachangelog.com)
 
 ### Added
 - Initial public release
-- Custom prayer management
-- Early WPF UI and automation
+- Custom prayer management with JSON-based configuration
+- Early WPF UI and automation foundation
 
 [1.2.1]: https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.2.1
 [1.2.0]: https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.2.0
