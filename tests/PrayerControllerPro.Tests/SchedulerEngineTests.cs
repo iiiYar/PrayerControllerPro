@@ -183,6 +183,50 @@ public class SchedulerEngineTests
         Assert.DoesNotContain(actions, a => a.Kind == SchedulerActionKind.PlayAdhan);
     }
 
+    [Fact]
+    public void Evaluate_PlaysIqama_WhenAppStartsWithinCatchUpWindow()
+    {
+        var prayerTime = new DateTimeOffset(2026, 4, 20, 12, 0, 0, TimeSpan.FromHours(3));
+        var schedule = CreateSchedule(
+            prayerTime,
+            new PrayerRuleSettings
+            {
+                Enabled = true,
+                StopBeforeMinutes = 5,
+                ResumeAfterMinutes = 15,
+                PlayIqama = true
+            });
+
+        var actions = _scheduler.Evaluate(
+            prayerTime.AddMinutes(28),
+            schedule,
+            new PrayerExecutionState());
+
+        Assert.Contains(actions, a => a.Kind == SchedulerActionKind.PlayIqama);
+    }
+
+    [Fact]
+    public void Evaluate_DoesNotPlayIqama_WhenAppStartsAfterCatchUpWindowExpires()
+    {
+        var prayerTime = new DateTimeOffset(2026, 4, 20, 12, 0, 0, TimeSpan.FromHours(3));
+        var schedule = CreateSchedule(
+            prayerTime,
+            new PrayerRuleSettings
+            {
+                Enabled = true,
+                StopBeforeMinutes = 5,
+                ResumeAfterMinutes = 15,
+                PlayIqama = true
+            });
+
+        var actions = _scheduler.Evaluate(
+            prayerTime.AddMinutes(31),
+            schedule,
+            new PrayerExecutionState());
+
+        Assert.DoesNotContain(actions, a => a.Kind == SchedulerActionKind.PlayIqama);
+    }
+
     private static DailyPrayerSchedule CreateSchedule(DateTimeOffset prayerTime, PrayerRuleSettings rule)
     {
         return new DailyPrayerSchedule

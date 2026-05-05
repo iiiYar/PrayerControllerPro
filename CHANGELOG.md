@@ -5,6 +5,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-05-05
+
+### Added
+- Prepared the first official GitHub Release package and update manifest flow
+- Added Iqama catch-up scheduler coverage to match Adhan wake/startup behavior
+
 ### Changed
 - Reorganized `Services/` into `Audio/`, `Logging/`, `Notifications/`, `System/`, `Updates/` subfolders
 - Renamed `State/` to `ViewModels/` with proper ViewModel naming conventions
@@ -12,10 +18,16 @@ Format based on [Keep a Changelog](https://keepachangelog.com).
   - `PrayerCardState` → `PrayerCardViewModel`
 - Split `Dialogs/` into per-dialog subfolders (`About/`, `Logs/`, `Prayer/`, `Reminder/`, `Settings/`, `Update/`)
 - Updated all namespaces and type references throughout the codebase
+- Updated NuGet dependencies: NAudio 2.3.0, Microsoft.NET.Test.Sdk 18.5.1, xunit 2.9.3, xunit.runner.visualstudio 3.1.5, and coverlet.collector 10.0.0
+- Made VolumeGuard the true default media control mode for new installs
 
 ### Fixed
+- Restored guarded audio sessions synchronously on app exit
+- Reduced the chance of a canceled VolumeGuard fade writing volume after immediate restore
+- Extended Adhan and Iqama audio catch-up to five minutes after wake/startup
 - Single-instance enforcement via named `Mutex` + `EventWaitHandle`
   — launching the app twice now activates the existing window instead of opening a second instance
+- Updated the project handoff version to match the application version
 
 ## [1.2.1] - 2026-04-30
 
@@ -68,6 +80,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com).
 - Custom prayer management with JSON-based configuration
 - Early WPF UI and automation foundation
 
+[1.3.0]: https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.3.0
 [1.2.1]: https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.2.1
 [1.2.0]: https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.2.0
 [1.1.1]: https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.1.1

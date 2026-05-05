@@ -4,14 +4,14 @@ This document is the quick starting point for future development sessions.
 
 ## Current State
 
-- Current version: `1.2.1`
+- Current version: `1.3.0`
 - Runtime target: `.NET 8`
 - UI framework: `WPF`
 - Main app project: `src/PrayerControllerPro.App`
 - Core logic project: `src/PrayerControllerPro.Core`
 - Tests project: `tests/PrayerControllerPro.Tests`
 - Local runtime settings: `%AppData%\PrayerControllerPro`
-- Published builds: local only under `releases\`, ignored by Git
+- Published builds: GitHub Releases; local artifacts are generated under `releases\` and ignored by Git
 
 ## Start Here
 
@@ -46,4 +46,4 @@ This document is the quick starting point for future development sessions.
 - Split `MainWindow.xaml.cs` orchestration into smaller app services.
 - Add UI tests or smoke tests for opening settings/reminder dialogs.
 - Add a safer Windows media-state controller if direct player state becomes necessary.
-- Add GitHub Releases if executable builds need to be distributed from GitHub.
+- Add a signed installer if the app needs a more polished installation path.

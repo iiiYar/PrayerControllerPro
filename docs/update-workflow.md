@@ -29,28 +29,23 @@ Compress-Archive -Path releases\vX.Y.Z\win-x64\* -DestinationPath releases\Praye
 Get-FileHash releases\PrayerControllerPro-vX.Y.Z-win-x64.zip -Algorithm SHA256
 ```
 
-6. Copy the ZIP into `downloads\` so the app can download it from GitHub Raw:
+6. Create a GitHub Release named `vX.Y.Z` and upload the ZIP as a release asset.
 
-```powershell
-New-Item -ItemType Directory -Force downloads
-Copy-Item releases\PrayerControllerPro-vX.Y.Z-win-x64.zip downloads\PrayerControllerPro-vX.Y.Z-win-x64.zip
-```
-
-7. Update `update.json`:
+7. Update `update.json` to point at the official GitHub Release asset:
 
 ```json
 {
   "latestVersion": "X.Y.Z",
   "title": "Prayer Controller Pro vX.Y.Z",
   "notes": "Short release notes shown inside the app.",
-  "downloadUrl": "https://raw.githubusercontent.com/iiiYar/PrayerControllerPro/main/downloads/PrayerControllerPro-vX.Y.Z-win-x64.zip",
-  "releaseUrl": "https://github.com/iiiYar/PrayerControllerPro/tree/vX.Y.Z",
+  "downloadUrl": "https://github.com/iiiYar/PrayerControllerPro/releases/download/vX.Y.Z/PrayerControllerPro-vX.Y.Z-win-x64.zip",
+  "releaseUrl": "https://github.com/iiiYar/PrayerControllerPro/releases/tag/vX.Y.Z",
   "sha256": "ZIP_SHA256_HERE",
   "mandatory": false
 }
 ```
 
-8. Commit the version bump, docs, `update.json`, and the `downloads\` ZIP.
+8. Commit the version bump, docs, and `update.json`.
 9. Create and push an annotated Git tag named `vX.Y.Z`.
 
 Users on older versions will see the update dialog the next time the app starts, unless they disabled automatic update checks.

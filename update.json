@@ -1,9 +1,9 @@
 {
-  "latestVersion": "1.2.1",
-  "title": "Prayer Controller Pro v1.2.1",
-  "notes": "This release adds the official Prayer Controller Pro identity across the repository and app, including the app icon, tray icon, branded header, publisher metadata, and a structured About window with version, publisher, repository, and update feed details.",
-  "downloadUrl": "https://raw.githubusercontent.com/iiiYar/PrayerControllerPro/main/downloads/PrayerControllerPro-v1.2.1-win-x64.zip",
-  "releaseUrl": "https://github.com/iiiYar/PrayerControllerPro/tree/v1.2.1",
-  "sha256": "2809A390C9A89B897CF3D0CEFF9C6617830C996A4F6865D9250430CADCD0223C",
+  "latestVersion": "1.3.0",
+  "title": "Prayer Controller Pro v1.3.0",
+  "notes": "This release ships the first official GitHub Release package, makes VolumeGuard the true default for new installs, restores guarded audio immediately on exit, extends Adhan/Iqama catch-up to five minutes, and updates NuGet dependencies.",
+  "downloadUrl": "https://github.com/iiiYar/PrayerControllerPro/releases/download/v1.3.0/PrayerControllerPro-v1.3.0-win-x64.zip",
+  "releaseUrl": "https://github.com/iiiYar/PrayerControllerPro/releases/tag/v1.3.0",
+  "sha256": "C6C06D3ACB157E611A677A968D3D9A2DB3A4A390E5C0F4D0E3FCAD1ADA32A0E7",
   "mandatory": false
 }

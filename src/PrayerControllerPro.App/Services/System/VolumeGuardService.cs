@@ -100,7 +100,10 @@ public sealed class VolumeGuardService(AppLogService logService)
             try
             {
                 guardedSession.TransitionCancellation?.Cancel();
-                guardedSession.Volume.Volume = guardedSession.OriginalVolume;
+                lock (guardedSession.SyncRoot)
+                {
+                    guardedSession.Volume.Volume = guardedSession.OriginalVolume;
+                }
             }
             catch (Exception ex)
             {
@@ -147,7 +150,15 @@ public sealed class VolumeGuardService(AppLogService logService)
             for (var index = 0; index < steps.Count; index++)
             {
                 cancellation.Token.ThrowIfCancellationRequested();
-                guardedSession.Volume.Volume = (float)steps[index];
+                lock (guardedSession.SyncRoot)
+                {
+                    if (cancellation.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
+                    guardedSession.Volume.Volume = (float)steps[index];
+                }
 
                 if (index < steps.Count - 1)
                 {
@@ -194,6 +205,7 @@ public sealed class VolumeGuardService(AppLogService logService)
         public float TargetVolume { get; set; } = originalVolume;
         public VolumeGuardTransitionMode TransitionMode { get; set; } = VolumeGuardTransitionMode.Fast;
         public CancellationTokenSource? TransitionCancellation { get; set; }
+        public object SyncRoot { get; } = new();
         public bool IsTransitionActive => TransitionCancellation is { IsCancellationRequested: false };
     }
 }
