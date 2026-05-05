@@ -1,1 +1,118 @@
-PCMgUHJheWVyIENvbnRyb2xsZXIgUHJvCgo8cCBhbGlnbj0iY2VudGVyIj4KICA8aW1nIHNyYz0ic3JjL1ByYXllckNvbnRyb2xsZXJQcm8uQXBwL0Fzc2V0cy9icmFuZC1tYXJrLnBuZyIgYWx0PSJQcmF5ZXIgQ29udHJvbGxlciBQcm8iIHdpZHRoPSIxMjAiIC8+CjwvcD4KCjxwIGFsaWduPSJjZW50ZXIiPlByYXllciBDb250cm9sbGVyIFBybyBpcyBhIFdpbmRvd3MgZGVza3RvcCBhcHBsaWNhdGlvbiBidWlsdCB3aXRoIC5ORVQgOCBhbmQgV1BGLjxicj4KSXQgYXV0b21hdGVzIHByYXllci10aW1lLWJhc2VkIG1lZGlhIGNvbnRyb2wsIEFkaGFuIGFuZCBJcWFtYSBhdWRpbyBwbGF5YmFjayw8YnI+CnJlbWluZGVycywgbm90aWZpY2F0aW9ucywgYW5kIHN5c3RlbSB0cmF5IGJlaGF2aW9yLjwvcD4KCjxwIGFsaWduPSJjZW50ZXIiPgogIDxhIGhyZWY9Imh0dHBzOi8vZ2l0aHViLmNvbS9paWlZYXIvUHJheWVyQ29udHJvbGxlclByby9yZWxlYXNlcyI+CiAgICA8aW1nIHNyYz0iaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9naXRodWIvdi9yZWxlYXNlL2lpaVlhci9QcmF5ZXJDb250cm9sbGVyUHJvIiBhbHQ9IkxhdGVzdCBSZWxlYXNlIiAvPgogIDwvYT4KICA8aW1nIHNyYz0iaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9iYWRnZS9wbGF0Zm9ybS1XaW5kb3dzLWJsdWUiIGFsdD0iV2luZG93cyIgLz4KICA8aW1nIHNyYz0iaHR0cHM6Ly9pbWcuc2hpZWxkcy5pby9iYWRnZS8uTkVULTgtcHVycGxlIiBhbHQ9Ii5ORVQgOCIgLz4KICA8YSBocmVmPSJMSUNFTlNFIj4KICAgIDxpbWcgc3JjPSJodHRwczovL2ltZy5zaGllbGRzLmlvL2dpdGh1Yi9saWNlbnNlL2lpaVlhci9QcmF5ZXJDb250cm9sbGVyUHJvIiBhbHQ9IkxpY2Vuc2UiIC8+CiAgPC9hPgo8L3A+CgotLS0KCiMjIEZlYXR1cmVzCgotIFByYXllciBzY2hlZHVsZSBmcm9tIEFsQWRoYW4gQVBJIHdpdGggZGFpbHkgbG9jYWwgY2FjaGluZwotIENpdHkgYW5kIGRpc3RyaWN0IHN1cHBvcnQgKFNhdWRpIEFyYWJpYSwgVUFFLCBFZ3lwdCkKLSBBZGhhbiBhbmQgSXFhbWEgYXVkaW8gcGxheWJhY2sgd2l0aCBjb25maWd1cmFibGUgZmlsZSBwcmVzZXRzCi0gTWVkaWEgcGF1c2UgYW5kIHJlc3VtZSBhdXRvbWF0aW9uIGFyb3VuZCBwcmF5ZXIgdGltZXMKLSBWb2x1bWUgZ3VhcmQgd2l0aCBzbW9vdGggZmFkZSB0cmFuc2l0aW9ucwotIEN1c3RvbSByZW1pbmRlcnMgd2l0aCBpbmRlcGVuZGVudCBydWxlcyBwZXIgcHJheWVyCi0gV2luZG93cyBzeXN0ZW0gdHJheSB3aXRoIGxpdmUgY291bnRkb3duIHRvb2x0aXAKLSBXaW5kb3dzIGJhbGxvb24gYW5kIERpc2NvcmQgd2ViaG9vayBub3RpZmljYXRpb25zCi0gQXV0by1zdGFydCB3aXRoIFdpbmRvd3MKLSBCYW5kLWluIHVwZGF0ZSBjaGVja2VyIHdpdGggdmVyc2lvbiBtYW5pZmVzdAotIFN0cnVjdHVyZWQgbG9jYWwgSlNPTkwgYXBwbGljYXRpb24gbG9ncwotIENvbXBhY3Qgd2lkZ2V0IG1vZGUKLSBTaW5nbGUtaW5zdGFuY2UgZW5mb3JjZW1lbnQg4oCUIE9ubHkgb25lIGNvcHkgcnVucyBhdCBhIHRpbWUKCiMjIFNjcmVlbnNob3RzCgo+IFNjcmVlbnNob3RzIGNvbWluZyBzb29uCgojIyBJbnN0YWxsYXRpb24KCjEuIERvd25sb2FkIHRoZSBsYXRlc3QgcmVsZWFzZSBmcm9tIHRoZSBbUmVsZWFzZXMgcGFnZV0oaHR0cHM6Ly9naXRodWIuY29tL2lpaVlhci9QcmF5ZXJDb250cm9sbGVyUHJvL3JlbGVhc2VzKQoyLiBFeHRyYWN0IHRoZSBaSVAgZmlsZQozLiBSdW4gYFByYXllckNvbnRyb2xsZXJQcm8uZXhlYAo0LiBObyBpbnN0YWxsZXIgcmVxdWlyZWQKCiMjIFJlcXVpcmVtZW50cwoKLSBXaW5kb3dzIDEwIG9yIFdpbmRvd3MgMTEgKHg2NCkKLSBbLk5FVDggRGVza3RvcCBSdW50aW1lXShodHRwczovL2RvdG5ldC5taWNyb3NvZnQuY29tL2VuLXVzL2Rvd25sb2FkL2RvdG5ldC84LjApCgojIyBCdWlsZCBmcm9tIFNvdXJjZQoKYGBgYmFzaApnaXQgY2xvbmUgaHR0cHM6Ly9naXRodWIuY29tL2lpaVlhci9QcmF5ZXJDb250cm9sbGVyUHJvLmdpdApjZCBQcmF5ZXJDb250cm9sbGVyUHJvCmRvdG5ldCBidWlsZApkb3RuZXQgcnVuIC0tcHJvamVjdCBzcmMvUHJheWVyQ29udHJvbGxlclByby5BcHAKYGBgCgojIyBQcm9qZWN0IFN0cnVjdHVyZQoKYGBgCnNyYy8KICBQcmF5ZXJDb250cm9sbGVyUHJvLkNvcmUvCiAgICBDYXRhbG9ncy8gICAgICAgICDigKQgY2l0eSwgZGlzdHJpY3QsIGNhbGN1bGF0aW9uIG1ldGhvZCBkZWZpbml0aW9ucwogICAgTW9kZWxzLyAgICAgICAgICDigKQgZG9tYWluIG1vZGVscyBhbmQgZW51bXMKICAgIFNlcnZpY2VzLyAgICAgICAgIOKApCBwcmF5ZXIgdGltZSBwcm92aWRlciwgc2NoZWR1bGVyIGVuZ2luZSwgc2V0dGluZ3Mgc3RvcmUKCiAgUHJheWVyQ29udHJvbGxlclByby5BcHAvCiAgICBBc3NldHMvICAgICAgICAgICDigKQgaWNvbnMgYW5kIGVtYmVkZGVkIHJlc291cmNlcwogICAgQ29udmVydGVycy8gICAgICAgIOKApCBXUEYgdmFsdWUgY29udmVydGVycwogICAgRGlhbG9ncy8KICAgICAgQWJvdXQvICAgICAgICAgIOKApCBBYm91dCB3aW5kb3cKICAgICAgTG9ncy8gICAgICAgICAgIOKApCBMb2cgdmlld2VyIHdpbmRvdwogICAgICBQcmF5ZXIvICAgICAgICAgIOKApCBQcmF5ZXIgcnVsZSBlZGl0b3Igd2luZG93CiAgICAgIFJlbWluZGVyLyAgICAgICDigKQgQ3VzdG9tIHJlbWluZGVyIHdpbmRvdwogICAgICBTZXR0aW5ncy8gICAgICAgIOKApCBBcHAgc2V0dGluZ3Mgd2luZG93CiAgICAgIFVwZGF0ZS8gICAgICAgICDigKQgVXBkYXRlIGF2YWlsYWJsZSB3aW5kb3cKICAgIEluZnJhc3RydWN0dXJlLyAgIOKApCBPYnNlcnZhYmxlT2JqZWN0IGJhc2UgY2xhc3MKICAgIFNlcnZpY2VzLwogICAgICBBdWRpby8gICAgICAgICAgIOKApCBBZGhhbiBhbmQgSXFhbWEgcGxheWJhY2ssIHByZXNldCBkb3dubG9hZAogICAgICBMb2dnaW5nLyAgICAgICAgIOKApCBGaWxlLWJhc2VkIHN0cnVjdHVyZWQgbG9nZ2luZwogICAgICBOb3RpZmljYXRpb25zLyAgIOKApCBXaW5kb3dzIHRyYXkgYW5kIERpc2NvcmQgbm90aWZpY2F0aW9ucwogICAgICBTeXN0ZW0vICAgICAgICAgIOKApCBBdXRvLXN0YXJ0LCB0cmF5IGljb24sIHZvbHVtZSBndWFyZCwgV2luMzIgbWVkaWEKICAgICAgVXBkYXRlcy8gICAgICAgIOKApCBVcGRhdGUgY2hlY2sgc2VydmljZSBhbmQgcmVzdWx0IG1vZGVsCiAgICBWaWV3TW9kZWxzLyAgICAgICDigKQgTWFpblZpZXdNb2RlbCwgUHJheWVyQ2FyZFZpZXdNb2RlbAoKdGVzdHMvCiAgUHJheWVyQ29udHJvbGxlclByby5UZXN0cy8KYGBgCgojIyBBcmNoaXRlY3R1cmUKClNlZSBbZG9jcy9hcmNoaXRlY3R1cmUubWRdKGRvY3MvYXJjaGl0ZWN0dXJlLm1kKSBmb3IgZnVsbCBkYXRhIGZsb3cgYW5kIGxheWVyIHJlc3BvbnNpYmlsaXRpZXMuCgojIyBDaGFuZ2Vsb2cKClNlZSBbQ0hBTkdFTE9HLm1kXShDSEFOR0VMT0cubWQpIGZvciBmdWxsIHZlcnNpb24gaGlzdG9yeS4KCiMjIENvbnRyaWJ1dGluZwoKQ29udHJpYnV0aW9ucyBhbmQgYnVnIHJlcG9ydHMgYXJlIHdlbGNvbWUuCgoxLiBGb3JrIHRoZSByZXBvc2l0b3J5CjIuIENyZWF0ZSBhIGZlYXR1cmUgYnJhbmNoOiBgZ2l0IGNoZWNrb3V0IC1iIGZlYXR1cmUveW91ci1mZWF0dXJlYAozLiBDb21taXQgeW91ciBjaGFuZ2VzIHdpdGggY2xlYXIgbWVzc2FnZXMKNC4gT3BlbiBhIHB1bGwgcmVxdWVzdAoKIyMgTGljZW5zZQoKQWRkIGEgbGljZW5zZSBmaWxlIGJlZm9yZSBwdWJsaXNoaW5nIGZvciBicm9hZCByZXVzZS4K
+# Prayer Controller Pro
+
+<p align="center">
+  <img src="src/PrayerControllerPro.App/Assets/brand-mark.png" alt="Prayer Controller Pro" width="120" />
+</p>
+
+<p align="center">
+  Prayer Controller Pro is a Windows desktop application built with .NET 8 and WPF.<br>
+  It automates prayer-time-based media control, Adhan and Iqama audio playback,<br>
+  reminders, notifications, and system tray behavior.
+</p>
+
+<p align="center">
+  <a href="https://github.com/iiiYar/PrayerControllerPro/releases">
+    <img src="https://img.shields.io/github/v/release/iiiYar/PrayerControllerPro" alt="Latest Release" />
+  </a>
+  <img src="https://img.shields.io/badge/platform-Windows-blue" alt="Windows" />
+  <img src="https://img.shields.io/badge/.NET-8-purple" alt=".NET 8" />
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/iiiYar/PrayerControllerPro" alt="License" />
+  </a>
+</p>
+
+---
+
+## Features
+
+- Prayer schedule from AlAdhan API with daily local caching
+- City and district support (Saudi Arabia, UAE, Egypt)
+- Adhan and Iqama audio playback with configurable file presets
+- Media pause and resume automation around prayer times
+- Volume guard with smooth fade transitions
+- Custom reminders with independent rules per prayer
+- Windows system tray with live countdown tooltip
+- Windows balloon and Discord webhook notifications
+- Auto-start with Windows
+- Built-in update checker with version manifest
+- Structured local JSONL application logs
+- Compact widget mode
+- Single-instance enforcement — only one copy runs at a time
+
+## Screenshots
+
+> Screenshots coming soon
+
+## Installation
+
+1. Download the latest release from the [Releases page](https://github.com/iiiYar/PrayerControllerPro/releases)
+2. Extract the ZIP file
+3. Run `PrayerControllerPro.exe`
+4. No installer required
+
+## Requirements
+
+- Windows 10 or Windows 11 (x64)
+- [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+
+## Build from Source
+
+```bash
+git clone https://github.com/iiiYar/PrayerControllerPro.git
+cd PrayerControllerPro
+dotnet build
+dotnet run --project src/PrayerControllerPro.App
+```
+
+## Project Structure
+
+```
+src/
+  PrayerControllerPro.Core/
+    Catalogs/         — city, district, calculation method definitions
+    Models/           — domain models and enums
+    Services/         — prayer time provider, scheduler engine, settings store
+
+  PrayerControllerPro.App/
+    Assets/           — icons and embedded resources
+    Converters/       — WPF value converters
+    Dialogs/
+      About/          — About window
+      Logs/           — Log viewer window
+      Prayer/         — Prayer rule editor window
+      Reminder/       — Custom reminder window
+      Settings/       — App settings window
+      Update/         — Update available window
+    Infrastructure/   — ObservableObject base class
+    Services/
+      Audio/          — Adhan and Iqama playback, preset download
+      Logging/        — File-based structured logging
+      Notifications/  — Windows tray and Discord notifications
+      System/         — Auto-start, tray icon, volume guard, Win32 media
+      Updates/        — Update check service and result model
+    ViewModels/       — MainViewModel, PrayerCardViewModel
+
+tests/
+  PrayerControllerPro.Tests/
+```
+
+## Architecture
+
+See [docs/architecture.md](docs/architecture.md) for full data flow and layer responsibilities.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
+
+## Contributing
+
+Contributions and bug reports are welcome.
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes with clear messages
+4. Open a pull request
+
+## License
+
+Add a license file before publishing for broad reuse.
